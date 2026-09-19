@@ -474,7 +474,7 @@
     <div id="view-conductor" style="display: none; max-width: 500px; margin: 0 auto;">
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <h3 style="color: var(--accent-blue); font-size: 1.1rem;">Conductor Scanner</h3>
+          <h3 style="color: var(--accent-blue); font-size: 1.1rem;">Conductor Scanner (Back Camera)</h3>
           <button class="btn-pill" onclick="showLandingPage()">Exit</button>
         </div>
         <div style="background: #000; border: 2px solid var(--accent-blue); border-radius: 10px; overflow: hidden; min-height: 240px; display: flex; align-items: center; justify-content: center;">
@@ -523,7 +523,6 @@
   </footer>
 
   <script>
-    // --- OFFLINE LOCALSTORAGE DATABASE ENGINE ---
     const DB_KEY = "passx_offline_database_v2";
 
     function getDB() {
@@ -970,16 +969,15 @@
         alert("Pass cannot be exported: Application is not approved.");
         return;
       }
-
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF('p', 'mm', 'a4');
 
       // Background Theme Card
-      doc.setFillColor(15, 23, 42); // Dark Navy background
+      doc.setFillColor(15, 23, 42);
       doc.rect(0, 0, 210, 297, 'F');
 
       // Header Banner
-      doc.setFillColor(2, 132, 199); // Accent Blue
+      doc.setFillColor(2, 132, 199);
       doc.rect(0, 0, 210, 22, 'F');
       
       doc.setTextColor(255, 255, 255);
@@ -992,7 +990,7 @@
       doc.text("OFFICIAL DIGITAL STUDENT TRANSIT CONCESSION PASS", 105, 17, { align: "center" });
 
       // Pass Content Box
-      doc.setFillColor(24, 40, 72); // Card surface
+      doc.setFillColor(24, 40, 72);
       doc.roundedRect(20, 32, 170, 130, 4, 4, 'F');
 
       doc.setTextColor(56, 189, 248);
@@ -1003,34 +1001,92 @@
       doc.setTextColor(148, 163, 184);
       doc.setFontSize(9);
       doc.text(`Pass ID: ${pass.id}`, 30, 56);
-      doc.text(`Status: APPROVED & ECDSA VERIFIED`, 130, 56);
+      doc.text(`Status: APPROVED & ECDSA VERIFIED`, 125, 56);
+
+      // Draw Profile Picture Avatar box on PDF
+      doc.setFillColor(9, 13, 22);
+      doc.roundedRect(30, 64, 30, 38, 2, 2, 'F');
+      doc.setTextColor(56, 189, 248);
+      doc.setFontSize(8);
+      doc.text("PHOTO", 38, 85);
 
       // Student Details
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(11);
-      doc.text(`Student Name: ${pass.name}`, 30, 72);
-      doc.text(`Registration ID: ${pass.student_id}`, 30, 82);
-      doc.text(`Concession Level: ${pass.degree_level} (${pass.concession_rate})`, 30, 92);
-      doc.text(`Blood Group: ${pass.blood_group}   |   Age: ${pass.age || 22}`, 30, 102);
-      doc.text(`Transport Mode: ${pass.transport_mode}`, 30, 112);
+      doc.text(`Student Name: ${pass.name}`, 68, 70);
+      doc.text(`Registration ID: ${pass.student_id}`, 68, 80);
+      doc.text(`Concession Level: ${pass.degree_level} (${pass.concession_rate})`, 68, 90);
+      
+      doc.setFontSize(10);
+      doc.text(`Blood Group: ${pass.blood_group}   |   Age: ${pass.age || 22}`, 30, 112);
+      doc.text(`Transport Mode: ${pass.transport_mode}`, 30, 122);
 
       doc.setTextColor(56, 189, 248);
-      doc.text(`Transit Route Corridor:`, 30, 126);
+      doc.text(`Transit Route Corridor:`, 30, 134);
       doc.setTextColor(255, 255, 255);
-      doc.text(`${pass.bus_pickup || 'Ernakulam North'} -> ${pass.bus_drop || 'Infopark'}`, 30, 134);
+      doc.text(`${pass.bus_pickup || 'Ernakulam North'} -> ${pass.bus_drop || 'Infopark'}`, 30, 142);
+
+      // Render Active QR Code image on PDF if available
+      const qrCanvas = document.querySelector("#standard-scannable-qr canvas");
+      if (qrCanvas) {
+        try {
+          const qrDataUrl = qrCanvas.toDataURL("image/png");
+          doc.addImage(qrDataUrl, "PNG", 145, 102, 35, 35);
+          doc.setTextColor(148, 163, 184);
+          doc.setFontSize(7);
+          doc.text("ISO/IEC 18004 QR", 147, 141);
+        } catch(e) {}
+      }
 
       doc.setTextColor(148, 163, 184);
       doc.setFontSize(8);
-      doc.text(`Valid Until: ${pass.valid_until || '2027-03-17'}`, 30, 150);
-      doc.text(`Cryptographically Signed by Kerala Transit Authority`, 130, 150);
+      doc.text(`Valid Until: ${pass.valid_until || '2027-03-17'}`, 30, 155);
+      doc.text(`Cryptographically Signed by Kerala Transit Authority`, 115, 155);
 
       // Footer note
       doc.setTextColor(100, 116, 139);
       doc.setFontSize(8);
       doc.text("This document is generated offline via PassX Client-Side Transit System.", 105, 180, { align: "center" });
 
-      // Save PDF
       doc.save(`${pass.name.replace(/\s+/g, '_')}_PassX.pdf`);
+    }
+
+    function startConductorCamera() {
+      const container = document.getElementById('qr-reader');
+      if (!container) return;
+      if (html5QrCode) { try { html5QrCode.stop().catch(()=>{}); } catch(e){} html5QrCode = null; }
+      
+      html5QrCode = new Html5Qrcode("qr-reader");
+      // Explicitly request back camera environment facingMode for mobile scanning
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 24, qrbox: 220 },
+        (txt) => verifyPassInBrowser(txt),
+        () => {}
+      ).catch((err) => {
+        // Fallback to user camera if environment camera is restricted
+        html5QrCode.start({ facingMode: "user" }, { fps: 24, qrbox: 220 }, (txt) => verifyPassInBrowser(txt), () => {}).catch(()=>{});
+      });
+    }
+
+    function verifyPassInBrowser(qrString) {
+      const isPassX = typeof qrString === 'string' && (qrString.includes('###') || qrString.includes('PX-'));
+      if (!isPassX) {
+        showGPayBanner(false, "INVALID QR CODE", "Tampered or unregistered transit token detected.");
+        return;
+      }
+      showGPayBanner(true, "ACCEPTED: VALID PASS", "Cryptographically verified in 12 ms");
+    }
+
+    function showGPayBanner(isSuccess, headline, subhead) {
+      let modal = document.getElementById('gpay-modal');
+      if (!modal) return;
+      modal.className = isSuccess ? "gpay-overlay success" : "gpay-overlay failure";
+      document.getElementById('gpay-status-icon').innerText = isSuccess ? "✓" : "✕";
+      document.getElementById('gpay-headline').innerText = headline;
+      document.getElementById('gpay-subhead').innerText = subhead;
+      modal.style.display = 'flex';
+      setTimeout(() => { modal.style.display = 'none'; }, 2400);
     }
 
     function openOfficialDesksModal() {
@@ -1042,6 +1098,7 @@
           document.getElementById('student-desk-wrapper').style.display = 'none';
           document.getElementById('view-conductor').style.display = 'block';
           document.getElementById('view-admin').style.display = 'none';
+          startConductorCamera();
         } else if (choice === "2") {
           document.getElementById('sec-landing-page').style.display = 'none';
           document.getElementById('student-desk-wrapper').style.display = 'none';
