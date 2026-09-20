@@ -256,14 +256,19 @@
       <div class="brand-icon">PX</div>
       <div>
         <div class="brand-title">Pass<span>X</span></div>
-        <div style="font-size: 0.65rem; color: var(--accent-blue);">Universal Student Transit Desk</div>
+        <div style="font-size: 0.65rem; color: var(--accent-blue);" data-i18n="sub_brand">Universal Student Transit Desk</div>
       </div>
     </div>
 
     <div class="nav-actions">
-      <button class="btn-pill" onclick="showLandingPage()">Home</button>
-      <button class="btn-pill" onclick="toggleTheme()">Theme (Day/Night)</button>
-      <button class="btn-pill btn-official" onclick="openOfficialDesksModal()">Staff Desks</button>
+      <select id="language-selector" class="select-pill" onchange="changeLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="ml">മലയാളം (Malayalam)</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+      </select>
+      <button class="btn-pill" onclick="showLandingPage()" data-i18n="nav_home">Home</button>
+      <button class="btn-pill" onclick="toggleTheme()" data-i18n="nav_theme">Theme</button>
+      <button class="btn-pill btn-official" onclick="openOfficialDesksModal()" data-i18n="nav_desks">Staff Desks</button>
     </div>
   </header>
 
@@ -271,9 +276,9 @@
     <!-- HERO GATEWAY -->
     <div id="sec-landing-page">
       <div class="hero-container">
-        <div class="hero-badge">OFFLINE CRYPTOGRAPHIC TRANSIT AUTHORITY</div>
-        <h1 class="hero-title">Zero-Latency Digital Concessions for <span>All Students</span></h1>
-        <p class="hero-subtitle">
+        <div class="hero-badge" data-i18n="hero_badge">OFFLINE CRYPTOGRAPHIC TRANSIT AUTHORITY</div>
+        <h1 class="hero-title" data-i18n="hero_title">Zero-Latency Digital Concessions for <span>All Students</span></h1>
+        <p class="hero-subtitle" data-i18n="hero_subtitle">
           Tamper-proof student transit concession passes backed by browser LocalStorage engine,
           offline optical QR conductor validation, and integrated attendance log verification.
         </p>
@@ -281,32 +286,32 @@
         <div class="hero-stats-grid">
           <div class="hero-stat-card">
             <div class="hero-stat-val">100%</div>
-            <div class="hero-stat-lbl">Offline Standalone</div>
+            <div class="hero-stat-lbl" data-i18n="stat_offline">Offline Standalone</div>
           </div>
           <div class="hero-stat-card">
             <div class="hero-stat-val">12 ms</div>
-            <div class="hero-stat-lbl">Scan Verification</div>
+            <div class="hero-stat-lbl" data-i18n="stat_scan">Scan Verification</div>
           </div>
           <div class="hero-stat-card">
             <div class="hero-stat-val">15 Min</div>
-            <div class="hero-stat-lbl">Anti-Passback</div>
+            <div class="hero-stat-lbl" data-i18n="stat_antipass">Anti-Passback</div>
           </div>
           <div class="hero-stat-card">
             <div class="hero-stat-val">ECDSA</div>
-            <div class="hero-stat-lbl">P-256 Security</div>
+            <div class="hero-stat-lbl" data-i18n="stat_sec">P-256 Security</div>
           </div>
         </div>
 
         <div style="margin-top: 10px;">
-          <h3 style="font-size: 1rem; color: var(--text-main); margin-bottom: 12px;">Select Portal Gateway</h3>
+          <h3 style="font-size: 1rem; color: var(--text-main); margin-bottom: 12px;" data-i18n="gw_select_title">Select Portal Gateway</h3>
           <div class="gateway-grid">
             <div class="gateway-card" onclick="launchExistingUserPortal()">
-              <h3>Existing User Portal</h3>
-              <p>Access your active PassX smart QR pass, transit attendance logs, and profile vault.</p>
+              <h3 data-i18n="gw_existing_title">Existing User Portal</h3>
+              <p data-i18n="gw_existing_desc">Access your active PassX smart QR pass, transit attendance logs, and profile vault.</p>
             </div>
             <div class="gateway-card" onclick="launchNewApplicantPortal()">
-              <h3>New Applicant Portal</h3>
-              <p>Submit your digital transit concession application and generate automated enrollment proof.</p>
+              <h3 data-i18n="gw_new_title">New Applicant Portal</h3>
+              <p data-i18n="gw_new_desc">Submit your digital transit concession application and generate automated enrollment proof.</p>
             </div>
           </div>
         </div>
@@ -316,11 +321,11 @@
     <!-- EXISTING USER DESK WRAPPER -->
     <div id="student-desk-wrapper" style="display: none;">
       <div class="tabs-nav">
-        <button class="tab-btn active" id="tab-btn-pass" onclick="switchStudentTab('pass-view')">Smart Pass</button>
-        <button class="tab-btn" id="tab-btn-calendar" onclick="switchStudentTab('calendar-view')">Attendance</button>
-        <button class="tab-btn" id="tab-btn-excuse" onclick="switchStudentTab('excuse-view')">Disruption &amp; Excuses</button>
-        <button class="tab-btn" id="tab-btn-letter" onclick="switchStudentTab('letter-view')">Appeal Letter Desk</button>
-        <button class="tab-btn" id="tab-btn-profile" onclick="switchStudentTab('profile-view')">Profile Vault</button>
+        <button class="tab-btn active" id="tab-btn-pass" onclick="switchStudentTab('pass-view')" data-i18n="tab_pass">Smart Pass</button>
+        <button class="tab-btn" id="tab-btn-calendar" onclick="switchStudentTab('calendar-view')" data-i18n="tab_attendance">Attendance</button>
+        <button class="tab-btn" id="tab-btn-excuse" onclick="switchStudentTab('excuse-view')" data-i18n="tab_disruption">Disruption &amp; Excuses</button>
+        <button class="tab-btn" id="tab-btn-letter" onclick="switchStudentTab('letter-view')" data-i18n="tab_appeal">Appeal Letter Desk</button>
+        <button class="tab-btn" id="tab-btn-profile" onclick="switchStudentTab('profile-view')" data-i18n="tab_vault">Profile Vault</button>
       </div>
 
       <!-- 1. Pass View -->
@@ -329,7 +334,7 @@
           <div class="smart-card" id="student-smart-card">
             <div class="smart-card-header">
               <div>
-                <h3 style="color: var(--accent-blue); font-size: 1.05rem;">PassX Student Smart Pass</h3>
+                <h3 style="color: var(--accent-blue); font-size: 1.05rem;" data-i18n="card_title">PassX Student Smart Pass</h3>
                 <span style="font-size: 0.7rem; color: #94a3b8;">Pass ID: <strong id="card-pass-id">PX-146224</strong></span>
               </div>
               <span id="card-status-badge" class="badge-approved">APPROVED (179 DAYS)</span>
@@ -348,60 +353,60 @@
             </div>
 
             <div class="dates-lifecycle-grid" id="card-lifecycle-grid">
-              <div class="date-field">Applied: <strong id="card-date-applied">2026-09-01</strong></div>
-              <div class="date-field">Accepted: <strong id="card-date-accepted">2026-09-05</strong></div>
-              <div class="date-field">Renewal: <strong id="card-date-renewal">2027-02-15</strong></div>
-              <div class="date-field">Expires: <strong id="card-date-expiry" style="color:#f87171;">2027-03-17</strong></div>
+              <div class="date-field" data-i18n="date_applied">Applied: <strong id="card-date-applied">2026-09-01</strong></div>
+              <div class="date-field" data-i18n="date_accepted">Accepted: <strong id="card-date-accepted">2026-09-05</strong></div>
+              <div class="date-field" data-i18n="date_renewal">Renewal: <strong id="card-date-renewal">2027-02-15</strong></div>
+              <div class="date-field" data-i18n="date_expiry">Expires: <strong id="card-date-expiry" style="color:#f87171;">2027-03-17</strong></div>
               <div class="date-field" id="card-time-remaining-wrap" style="grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 4px; color:#4ade80;">
-                Time to Expiry: <strong id="card-days-remaining">179 Days Remaining</strong>
+                <span data-i18n="time_to_expiry">Time to Expiry:</span> <strong id="card-days-remaining">179 Days Remaining</strong>
               </div>
             </div>
 
             <div class="route-box" id="card-route-box">
               <div><strong>Bus Route:</strong> <span id="card-bus-route">Ernakulam North -> Infopark</span></div>
               <div><strong>Metro Route:</strong> <span id="card-metro-route">Kaloor Metro -> Edappally Metro</span></div>
-              <div>Institution: Universal Student Network</div>
-              <div>Clearance: Cleared (0 Restraints)</div>
+              <div data-i18n="card_institution">Institution: Universal Student Network</div>
+              <div data-i18n="card_clearance">Clearance: Cleared (0 Restraints)</div>
             </div>
 
             <div id="card-qr-section" style="text-align: center;"></div>
             <div id="card-download-section" style="margin-top: 12px;"></div>
 
-            <button type="button" class="btn-danger" onclick="deleteCurrentPass()">
+            <button type="button" class="btn-danger" onclick="deleteCurrentPass()" data-i18n="btn_delete_pass">
               Delete / Revoke Pass
             </button>
           </div>
         </div>
       </div>
 
-      <!-- 2. Attendance Calendar View (Locked if Rejected/Restrained) -->
+      <!-- 2. Attendance Calendar View -->
       <div id="sec-calendar-view" style="display: none;">
         <div class="card" id="calendar-card-wrap">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div>
-              <h3 style="color: var(--accent-blue); font-size: 1.1rem;">Transit Attendance Calendar</h3>
-              <p style="font-size: 0.76rem; color: var(--text-muted);">Morning (AM), Afternoon (NOON), Evening (PM)</p>
+              <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="cal_head">Transit Attendance Calendar</h3>
+              <p style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="cal_sub">Morning (AM), Afternoon (NOON), Evening (PM)</p>
             </div>
-            <span class="btn-pill" style="color: var(--accent-green); font-size: 0.7rem;">Compliance: 82%</span>
+            <span class="btn-pill" style="color: var(--accent-green); font-size: 0.7rem;" data-i18n="cal_comp">Compliance: 82%</span>
           </div>
 
           <div class="calendar-legend">
-            <div class="legend-item"><div class="legend-color" style="background:var(--accent-green)"></div> Scanned</div>
-            <div class="legend-item"><div class="legend-color" style="background:var(--accent-red)"></div> Unscanned / Missed</div>
-            <div class="legend-item"><div class="legend-color" style="background:var(--accent-amber)"></div> Delayed / Disrupted</div>
-            <div class="legend-item"><div class="legend-color" style="background:var(--accent-grey)"></div> Holiday</div>
+            <div class="legend-item"><div class="legend-color" style="background:var(--accent-green)"></div> <span data-i18n="leg_scanned">Scanned</span></div>
+            <div class="legend-item"><div class="legend-color" style="background:var(--accent-red)"></div> <span data-i18n="leg_unscanned">Unscanned / Missed</span></div>
+            <div class="legend-item"><div class="legend-color" style="background:var(--accent-amber)"></div> <span data-i18n="leg_delayed">Delayed / Disrupted</span></div>
+            <div class="legend-item"><div class="legend-color" style="background:var(--accent-grey)"></div> <span data-i18n="leg_holiday">Holiday</span></div>
           </div>
 
           <div class="attendance-calendar-grid" id="full-attendance-calendar"></div>
         </div>
       </div>
 
-      <!-- 3. Disruption & Excuse View (Locked if Rejected/Restrained) -->
+      <!-- 3. Disruption & Excuse View -->
       <div id="sec-excuse-view" style="display: none;">
         <div class="card" id="disruption-card-wrap">
           <div style="margin-bottom: 14px;">
-            <h3 style="color: var(--accent-blue); font-size: 1.1rem;">Auto-Issued Transit Disruption &amp; Excuse Certificates</h3>
-            <p style="font-size: 0.76rem; color: var(--text-muted);">Official certificates automatically pushed by the Transit Authority to excuse missed scans during transit delays.</p>
+            <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="dis_head">Auto-Issued Transit Disruption &amp; Excuse Certificates</h3>
+            <p style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="dis_sub">Official certificates automatically pushed by the Transit Authority to excuse missed scans during transit delays.</p>
           </div>
 
           <div id="disruption-list-container"></div>
@@ -412,18 +417,18 @@
       <div id="sec-letter-view" style="display: none;">
         <div class="card">
           <div style="margin-bottom: 14px;">
-            <h3 style="color: var(--accent-blue); font-size: 1.1rem;">Submit Explanation / Apology Letter to Approver Desk</h3>
-            <p style="font-size: 0.76rem; color: var(--text-muted);">If your pass was restrained or blacklisted, submit an official A4-format explanation letter for review.</p>
+            <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="letter_head">Submit Explanation / Apology Letter to Approver Desk</h3>
+            <p style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="letter_sub">If your pass was restrained or blacklisted, submit an official A4-format explanation letter for review.</p>
           </div>
 
           <form id="appeal-letter-form" onsubmit="submitAppealLetter(event)">
             <div class="form-grid">
               <div class="form-group">
-                <label>Letter Subject / Title</label>
+                <label data-i18n="lbl_subj">Letter Subject / Title</label>
                 <input type="text" id="appeal_title" placeholder="e.g. Apology Letter for Transit Inspection Rule Violation" required />
               </div>
               <div class="form-group">
-                <label>Letter Category</label>
+                <label data-i18n="lbl_cat">Letter Category</label>
                 <select id="appeal_category">
                   <option value="Apology & Reconsideration">Apology &amp; Reconsideration</option>
                   <option value="Technical Dispute">Technical Dispute / False Flag</option>
@@ -431,15 +436,15 @@
                 </select>
               </div>
               <div class="form-group" style="grid-column: 1 / -1;">
-                <label>Formal A4 Letter Content</label>
+                <label data-i18n="lbl_content">Formal A4 Letter Content</label>
                 <textarea id="appeal_body" rows="5" placeholder="To, The Approver Desk, Transit Authority... Respected Sir/Madam, I am writing this letter to explain..." required></textarea>
               </div>
             </div>
-            <button type="submit" class="btn-submit" style="margin-top: 10px;">Submit Letter to Approver Desk</button>
+            <button type="submit" class="btn-submit" style="margin-top: 10px;" data-i18n="btn_submit_letter">Submit Letter to Approver Desk</button>
           </form>
 
           <div style="margin-top: 20px;">
-            <h4 style="font-size: 0.95rem; color: var(--accent-blue); margin-bottom: 8px;">Submitted Appeal Letters</h4>
+            <h4 style="font-size: 0.95rem; color: var(--accent-blue); margin-bottom: 8px;" data-i18n="submitted_letters">Submitted Appeal Letters</h4>
             <div id="appeal-list-container"></div>
           </div>
         </div>
@@ -448,7 +453,7 @@
       <!-- 5. Profile Vault -->
       <div id="sec-profile-view" style="display: none;">
         <div class="card">
-          <h3 style="color: var(--accent-blue); margin-bottom: 16px; font-size: 1.1rem;">Student Profile Vault</h3>
+          <h3 style="color: var(--accent-blue); margin-bottom: 16px; font-size: 1.1rem;" data-i18n="vault_head">Student Profile Vault</h3>
           <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
             <img id="vault-photo-img" class="student-photo-img" src="" alt="Profile" />
             <div style="font-size: 0.85rem; line-height: 1.5;">
@@ -473,7 +478,7 @@
             <div><strong>Bus Corridor:</strong> <span id="vault-bus">Ernakulam North -> Infopark</span></div>
           </div>
 
-          <button type="button" class="btn-danger" style="margin-top: 16px;" onclick="deleteCurrentPass()">
+          <button type="button" class="btn-danger" style="margin-top: 16px;" onclick="deleteCurrentPass()" data-i18n="btn_delete_pass">
             Delete / Revoke Pass
           </button>
         </div>
@@ -485,28 +490,28 @@
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
           <div>
-            <h3 style="color: var(--accent-blue); font-size: 1.1rem;">New Transit Concession Application</h3>
-            <p style="font-size: 0.76rem; color: var(--text-muted);">Generates institutional enrollment proof automatically</p>
+            <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="app_head">New Transit Concession Application</h3>
+            <p style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="app_sub">Generates institutional enrollment proof automatically</p>
           </div>
           <div style="display:flex; gap: 6px;">
-            <button type="button" class="btn-pill" onclick="autoFillJainDemo()">Auto-Fill</button>
-            <button type="button" class="btn-pill" style="background: #16a34a; color:#fff;" onclick="openWhatsAppOtpModal()">WhatsApp OTP</button>
-            <button type="button" class="btn-pill" onclick="showLandingPage()">Back to Home</button>
+            <button type="button" class="btn-pill" onclick="autoFillJainDemo()" data-i18n="btn_autofill">Auto-Fill</button>
+            <button type="button" class="btn-pill" style="background: #16a34a; color:#fff;" onclick="openWhatsAppOtpModal()" data-i18n="btn_whatsapp">WhatsApp OTP</button>
+            <button type="button" class="btn-pill" onclick="showLandingPage()" data-i18n="btn_back_home">Back to Home</button>
           </div>
         </div>
 
         <form id="pass-registration-form">
           <div class="form-grid">
             <div class="form-group">
-              <label>Student Full Name</label>
+              <label data-i18n="lbl_name">Student Full Name</label>
               <input type="text" id="reg_name" required />
             </div>
             <div class="form-group">
-              <label>Student Reg / Roll ID</label>
+              <label data-i18n="lbl_reg">Student Reg / Roll ID</label>
               <input type="text" id="reg_student_id" required />
             </div>
             <div class="form-group">
-              <label>Gender Identification</label>
+              <label data-i18n="lbl_gender">Gender Identification</label>
               <select id="reg_gender">
                 <option value="Female">Female</option>
                 <option value="Male">Male</option>
@@ -514,19 +519,19 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Upload Live Selfie / Profile Photo (Required)</label>
+              <label data-i18n="lbl_photo">Upload Live Selfie / Profile Photo (Required)</label>
               <input type="file" id="reg_photo_file" accept="image/*" style="padding: 6px;" required />
             </div>
             <div class="form-group">
-              <label>Date of Birth</label>
+              <label data-i18n="lbl_dob">Date of Birth</label>
               <input type="date" id="reg_dob" value="2004-05-12" required />
             </div>
             <div class="form-group">
-              <label>Age</label>
+              <label data-i18n="lbl_age">Age</label>
               <input type="number" id="reg_age" value="22" required />
             </div>
             <div class="form-group">
-              <label>Blood Group</label>
+              <label data-i18n="lbl_blood">Blood Group</label>
               <select id="reg_blood_group">
                 <option value="O+">O Positive (O+)</option>
                 <option value="A+">A Positive (A+)</option>
@@ -535,23 +540,23 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Student Contact Phone</label>
+              <label data-i18n="lbl_phone">Student Contact Phone</label>
               <input type="tel" id="reg_phone" required />
             </div>
             <div class="form-group">
-              <label>Guardian Name</label>
+              <label data-i18n="lbl_guard_name">Guardian Name</label>
               <input type="text" id="reg_guardian_name" required />
             </div>
             <div class="form-group">
-              <label>Relation with Applicant</label>
+              <label data-i18n="lbl_guard_rel">Relation with Applicant</label>
               <input type="text" id="reg_guardian_relation" placeholder="e.g. Father, Mother" required />
             </div>
             <div class="form-group">
-              <label>Guardian Emergency Phone</label>
+              <label data-i18n="lbl_guard_phone">Guardian Emergency Phone</label>
               <input type="tel" id="reg_guardian_phone" required />
             </div>
             <div class="form-group">
-              <label>Opted Transport Mode</label>
+              <label data-i18n="lbl_transport">Opted Transport Mode</label>
               <select id="reg_transport_mode">
                 <option value="Both">Both Bus and Metro</option>
                 <option value="Bus">Bus Concession Only</option>
@@ -559,23 +564,23 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Bus Boarding Stop</label>
+              <label data-i18n="lbl_bus_pickup">Bus Boarding Stop</label>
               <input type="text" id="reg_bus_pickup" placeholder="e.g. Ernakulam North" />
             </div>
             <div class="form-group">
-              <label>Bus Dropping Stop</label>
+              <label data-i18n="lbl_bus_drop">Bus Dropping Stop</label>
               <input type="text" id="reg_bus_drop" placeholder="e.g. Infopark" />
             </div>
             <div class="form-group">
-              <label>Metro Boarding Station</label>
+              <label data-i18n="lbl_metro_pickup">Metro Boarding Station</label>
               <input type="text" id="reg_metro_pickup" placeholder="e.g. Kaloor Metro" />
             </div>
             <div class="form-group">
-              <label>Metro Dropping Station</label>
+              <label data-i18n="lbl_metro_drop">Metro Dropping Station</label>
               <input type="text" id="reg_metro_drop" placeholder="e.g. Edappally Metro" />
             </div>
             <div class="form-group">
-              <label>Degree Level (Subsidy Rule)</label>
+              <label data-i18n="lbl_degree">Degree Level (Subsidy Rule)</label>
               <select id="reg_degree_level">
                 <option value="UG">UG (100% Free Pass)</option>
                 <option value="PG">PG (100% Free Pass)</option>
@@ -583,19 +588,19 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Home Address</label>
+              <label data-i18n="lbl_home">Home Address</label>
               <input type="text" id="reg_home_address" required />
             </div>
             <div class="form-group">
-              <label>Institution Campus Address</label>
+              <label data-i18n="lbl_inst">Institution Campus Address</label>
               <input type="text" id="reg_institution_address" value="Jain University, Kochi Campus, Infopark" required />
             </div>
             <div class="form-group">
-              <label>Auto-Generated Enrollment Proof</label>
+              <label data-i18n="lbl_bonafide">Auto-Generated Enrollment Proof</label>
               <textarea id="reg_bonafide_text" rows="2" readonly style="color: var(--accent-blue); font-size: 0.74rem;"></textarea>
             </div>
           </div>
-          <button type="submit" class="btn-submit">Submit New Application</button>
+          <button type="submit" class="btn-submit" data-i18n="btn_submit_app">Submit New Application</button>
         </form>
       </div>
     </div>
@@ -604,18 +609,18 @@
     <div id="view-conductor" style="display: none; max-width: 500px; margin: 0 auto;">
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <h3 style="color: var(--accent-blue); font-size: 1.1rem;">Conductor Scanner (Back Camera)</h3>
-          <button class="btn-pill" onclick="showLandingPage()">Exit</button>
+          <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="cond_head">Conductor Scanner (Back Camera)</h3>
+          <button class="btn-pill" onclick="showLandingPage()" data-i18n="btn_exit">Exit</button>
         </div>
         <div style="background: #000; border: 2px solid var(--accent-blue); border-radius: 10px; overflow: hidden; min-height: 240px; display: flex; align-items: center; justify-content: center;">
           <div id="qr-reader" style="width: 100%;"></div>
         </div>
         <div style="margin-top: 14px; background: var(--bg-card); padding: 12px; border-radius: 8px;">
-          <h4 style="font-size: 0.85rem; color: var(--accent-amber); margin-bottom: 6px;">Conductor Action Console</h4>
-          <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;">Restrain or blacklist pass upon detecting rule violations or fraud.</p>
+          <h4 style="font-size: 0.85rem; color: var(--accent-amber); margin-bottom: 6px;" data-i18n="console_head">Conductor Action Console</h4>
+          <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;" data-i18n="console_sub">Restrain or blacklist pass upon detecting rule violations or fraud.</p>
           <div style="display: flex; gap: 6px;">
-            <button onclick="conductorRestrainPrompt()" style="flex:1; background: #d97706; color:#fff; border:none; padding:8px; border-radius:6px; font-weight:700; font-size:0.75rem; cursor:pointer;">Restrain Pass</button>
-            <button onclick="conductorBlacklistPrompt()" style="flex:1; background: #dc2626; color:#fff; border:none; padding:8px; border-radius:6px; font-weight:700; font-size:0.75rem; cursor:pointer;">Blacklist Pass</button>
+            <button onclick="conductorRestrainPrompt()" style="flex:1; background: #d97706; color:#fff; border:none; padding:8px; border-radius:6px; font-weight:700; font-size:0.75rem; cursor:pointer;" data-i18n="btn_restrain">Restrain Pass</button>
+            <button onclick="conductorBlacklistPrompt()" style="flex:1; background: #dc2626; color:#fff; border:none; padding:8px; border-radius:6px; font-weight:700; font-size:0.75rem; cursor:pointer;" data-i18n="btn_blacklist">Blacklist Pass</button>
           </div>
         </div>
       </div>
@@ -626,10 +631,10 @@
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
           <div>
-            <h3 style="color: var(--accent-blue); font-size: 1.1rem;">Approver Desk</h3>
-            <span style="font-size: 0.76rem; color: var(--text-muted);">Authorize pending passes &amp; review student appeal letters</span>
+            <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="admin_head">Approver Desk</h3>
+            <span style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="admin_sub">Authorize pending passes &amp; review student appeal letters</span>
           </div>
-          <button class="btn-pill" onclick="showLandingPage()">Exit</button>
+          <button class="btn-pill" onclick="showLandingPage()" data-i18n="btn_exit">Exit</button>
         </div>
         <div id="pending-applications-list"></div>
       </div>
@@ -717,12 +722,12 @@
   <!-- WHATSAPP OTP MODAL -->
   <div id="whatsapp-modal" class="modal-overlay">
     <div class="modal-sheet" style="max-width: 360px; text-align: center; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px;">
-      <h3 style="margin-bottom: 6px; font-size: 1.05rem;">Demo OTP Signing</h3>
-      <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; padding: 8px; border-radius: 8px; margin-bottom: 12px; font-weight: 800; color: #22c55e;">
+      <h3 style="margin-bottom: 6px; font-size: 1.05rem;" data-i18n="otp_head">Demo OTP Signing</h3>
+      <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; padding: 8px; border-radius: 8px; margin-bottom: 12px; font-weight: 800; color: #22c55e;" data-i18n="otp_code">
         Demo Code: 8492
       </div>
       <input type="text" id="whatsapp_otp_input" placeholder="Enter 4-digit OTP" style="width: 100%; text-align: center; font-size: 1.1rem; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-main); margin-bottom: 12px;" />
-      <button class="btn-submit" onclick="submitWhatsAppOtp()">Confirm</button>
+      <button class="btn-submit" onclick="submitWhatsAppOtp()" data-i18n="btn_confirm">Confirm</button>
     </div>
   </div>
 
@@ -739,7 +744,286 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v10";
+    const DB_KEY = "passx_offline_database_v11";
+
+    const i18nData = {
+      en: {
+        sub_brand: "Universal Student Transit Desk",
+        nav_home: "Home",
+        nav_theme: "Theme (Day/Night)",
+        nav_desks: "Staff Desks",
+        hero_badge: "OFFLINE CRYPTOGRAPHIC TRANSIT AUTHORITY",
+        hero_title: "Zero-Latency Digital Concessions for <span>All Students</span>",
+        hero_subtitle: "Tamper-proof student transit concession passes backed by browser LocalStorage engine, offline optical QR conductor validation, and integrated attendance log verification.",
+        stat_offline: "Offline Standalone",
+        stat_scan: "Scan Verification",
+        stat_antipass: "Anti-Passback",
+        stat_sec: "P-256 Security",
+        gw_select_title: "Select Portal Gateway",
+        gw_existing_title: "Existing User Portal",
+        gw_existing_desc: "Access your active PassX smart QR pass, transit attendance logs, and profile vault.",
+        gw_new_title: "New Applicant Portal",
+        gw_new_desc: "Submit your digital transit concession application and generate automated enrollment proof.",
+        tab_pass: "Smart Pass",
+        tab_attendance: "Attendance",
+        tab_disruption: "Disruption & Excuses",
+        tab_appeal: "Appeal Letter Desk",
+        tab_vault: "Profile Vault",
+        card_title: "PassX Student Smart Pass",
+        date_applied: "Applied:",
+        date_accepted: "Accepted:",
+        date_renewal: "Renewal:",
+        date_expiry: "Expires:",
+        time_to_expiry: "Time to Expiry:",
+        card_institution: "Institution: Universal Student Network",
+        card_clearance: "Clearance: Cleared (0 Restraints)",
+        btn_delete_pass: "Delete / Revoke Pass",
+        app_head: "New Transit Concession Application",
+        app_sub: "Generates institutional enrollment proof automatically",
+        btn_autofill: "Auto-Fill",
+        btn_whatsapp: "WhatsApp OTP",
+        btn_back_home: "Back to Home",
+        lbl_name: "Student Full Name",
+        lbl_reg: "Student Reg / Roll ID",
+        lbl_gender: "Gender Identification",
+        lbl_photo: "Upload Live Selfie / Profile Photo (Required)",
+        lbl_dob: "Date of Birth",
+        lbl_age: "Age",
+        lbl_blood: "Blood Group",
+        lbl_phone: "Student Contact Phone",
+        lbl_guard_name: "Guardian Name",
+        lbl_guard_rel: "Relation with Applicant",
+        lbl_guard_phone: "Guardian Emergency Phone",
+        lbl_transport: "Opted Transport Mode",
+        lbl_bus_pickup: "Bus Boarding Stop",
+        lbl_bus_drop: "Bus Dropping Stop",
+        lbl_metro_pickup: "Metro Boarding Station",
+        lbl_metro_drop: "Metro Dropping Station",
+        lbl_degree: "Degree Level (Subsidy Rule)",
+        lbl_home: "Home Address",
+        lbl_inst: "Institution Campus Address",
+        lbl_bonafide: "Auto-Generated Enrollment Proof",
+        btn_submit_app: "Submit New Application",
+        cal_head: "Transit Attendance Calendar",
+        cal_sub: "Morning (AM), Afternoon (NOON), Evening (PM)",
+        cal_comp: "Compliance: 82%",
+        leg_scanned: "Scanned",
+        leg_unscanned: "Unscanned / Missed",
+        leg_delayed: "Delayed / Disrupted",
+        leg_holiday: "Holiday",
+        dis_head: "Auto-Issued Transit Disruption & Excuse Certificates",
+        dis_sub: "Official certificates automatically pushed by the Transit Authority to excuse missed scans during transit delays.",
+        vault_head: "Student Profile Vault",
+        letter_head: "Submit Explanation / Apology Letter to Approver Desk",
+        letter_sub: "If your pass was restrained or blacklisted, submit an official A4-format explanation letter for review.",
+        lbl_subj: "Letter Subject / Title",
+        lbl_cat: "Letter Category",
+        lbl_content: "Formal A4 Letter Content",
+        btn_submit_letter: "Submit Letter to Approver Desk",
+        submitted_letters: "Submitted Appeal Letters",
+        cond_head: "Conductor Scanner (Back Camera)",
+        btn_exit: "Exit",
+        admin_head: "Approver Desk",
+        admin_sub: "Authorize pending passes & review student appeal letters",
+        console_head: "Conductor Action Console",
+        console_sub: "Restrain or blacklist pass upon detecting rule violations or fraud.",
+        btn_restrain: "Restrain Pass",
+        btn_blacklist: "Blacklist Pass",
+        otp_head: "Demo OTP Signing",
+        otp_code: "Demo Code: 8492",
+        btn_confirm: "Confirm"
+      },
+      ml: {
+        sub_brand: "യൂണിവേഴ്സൽ സ്റ്റുഡൻ്റ് ട്രാൻസിറ്റ് ഡെസ്ക്",
+        nav_home: "ഹോം",
+        nav_theme: "തീം (പകൽ/രാത്രി)",
+        nav_desks: "ജീവനക്കാരുടെ ഡെസ്ക്",
+        hero_badge: "ഓഫ്‌ലൈൻ ക്രിപ്റ്റോഗ്രാഫിക് ട്രാൻസിറ്റ് അതോറിറ്റി",
+        hero_title: "എല്ലാ വിദ്യാർത്ഥികൾക്കുമുള്ള ഡിജിറ്റൽ യാത്രാക്കൂലി ഇളവുകൾ",
+        hero_subtitle: "സുരക്ഷിത വിദ്യാർത്ഥി യാത്രാക്കൂലി പാസുകൾ.",
+        stat_offline: "ഓഫ്‌ലൈൻ സ്റ്റാൻഡേലോൺ",
+        stat_scan: "സ്കാൻ വെരിഫിക്കേഷൻ",
+        stat_antipass: "ആന്റി-പാസ്ബാക്ക്",
+        stat_sec: "P-256 സുരക്ഷ",
+        gw_select_title: "പോർട്ടൽ തിരഞ്ഞെടുക്കുക",
+        gw_existing_title: "നിലവിലുള്ള ഉപയോക്തൃ പോർട്ടൽ",
+        gw_existing_desc: "നിങ്ങളുടെ ആക്ടീവ് പാസ്‌എക്സ് സ്മാർട്ട് ക്യുആർ പാസ് ആക്സസ് ചെയ്യുക.",
+        gw_new_title: "പുതിയ അപേക്ഷകരുടെ പോർട്ടൽ",
+        gw_new_desc: "പുതിയ യാത്രാക്കൂലി പാസിനായി അപേക്ഷിക്കുക.",
+        tab_pass: "സ്മാർട്ട് പാസ്",
+        tab_attendance: "ഹാജർ",
+        tab_disruption: "തടസ്സ സർട്ടിഫിക്കറ്റുകൾ",
+        tab_appeal: "അപ്പീൽ ലെറ്റർ",
+        tab_vault: "പ്രൊഫൈൽ വാൾട്ട്",
+        card_title: "പാസ്‌എക്സ് സ്റ്റുഡന്റ് സ്മാർട്ട് പാസ്",
+        date_applied: "അപേക്ഷിച്ചത്:",
+        date_accepted: "സ്വീകരിച്ചത്:",
+        date_renewal: "പുതുക്കൽ:",
+        date_expiry: "കാലാവധി കഴിയുന്നത്:",
+        time_to_expiry: "കാലാവധി തീരാൻ ബാക്കി:",
+        card_institution: "സ്ഥാപനം: യൂണിവേഴ്സൽ സ്റ്റുഡന്റ് നെറ്റ്‌വർക്ക്",
+        card_clearance: "ക്ലിയറൻസ്: ക്ലിയർ ചെയ്തു",
+        btn_delete_pass: "പാസ് ഡിലീറ്റ് ചെയ്യുക",
+        app_head: "പുതിയ ട്രാൻസിറ്റ് കൺസെഷൻ അപേക്ഷ",
+        app_sub: "സ്ഥാപന എൻറോൾമെന്റ് തെളിവ് സ്വയം സൃഷ്ടിക്കുന്നു",
+        btn_autofill: "ഓട്ടോ-ഫിൽ",
+        btn_whatsapp: "വാട്സ്ആപ്പ് ഒടിപി",
+        btn_back_home: "ഹോമിലേക്ക് മടങ്ങുക",
+        lbl_name: "വിദ്യാർത്ഥിയുടെ മുഴുവൻ പേര്",
+        lbl_reg: "രജിസ്ട്രേഷൻ / റോൾ ഐഡി",
+        lbl_gender: "ലിംഗം",
+        lbl_photo: "ഫോട്ടോ അപ്‌ലോഡ് ചെയ്യുക",
+        lbl_dob: "ജനനത്തീയതി",
+        lbl_age: "പ്രായം",
+        lbl_blood: "ബ്ലഡ് ഗ്രൂപ്പ്",
+        lbl_phone: "ഫോൺ നമ്പർ",
+        lbl_guard_name: "രക്ഷകർത്താവിന്റെ പേര്",
+        lbl_guard_rel: "ബന്ധം",
+        lbl_guard_phone: "അടിയന്തര ഫോൺ നമ്പർ",
+        lbl_transport: "യാത്രാമാർഗ്ഗം",
+        lbl_bus_pickup: "ബസ് കയറുന്ന സ്ഥലം",
+        lbl_bus_drop: "ബസ് ഇറങ്ങുന്ന സ്ഥലം",
+        lbl_metro_pickup: "മെട്രോ സ്റ്റേഷൻ (കയറുന്നത്)",
+        lbl_metro_drop: "മെട്രോ സ്റ്റേഷൻ (ഇറങ്ങുന്നത്)",
+        lbl_degree: "ഡിഗ്രി ലെവൽ",
+        lbl_home: "വീട്ടു വിലാസം",
+        lbl_inst: "ക്യാമ്പസ് വിലാസം",
+        lbl_bonafide: "ബൊനാഫൈഡ് സർട്ടിഫിക്കറ്റ്",
+        btn_submit_app: "അപേക്ഷ സമർപ്പിക്കുക",
+        cal_head: "ഹാജർ കലണ്ടർ",
+        cal_sub: "രാവിലെ (AM), ഉച്ചയ്ക്ക് (NOON), വൈകുന്നേരം (PM)",
+        cal_comp: "കംപ്ലയൻസ്: 82%",
+        leg_scanned: "സ്കാൻ ചെയ്തു",
+        leg_unscanned: "സ്കാൻ ചെയ്തില്ല / നഷ്ടമായി",
+        leg_delayed: "വൈകി / തടസ്സപ്പെട്ടു",
+        leg_holiday: "അവധി",
+        dis_head: "ഓട്ടോ-ഇഷ്യൂഡ് യാത്രാ തടസ്സ സർട്ടിഫിക്കറ്റുകൾ",
+        dis_sub: "യാത്രാ തടസ്സങ്ങൾ ഉണ്ടാകുമ്പോൾ ട്രാൻസിറ്റ് അതോറിറ്റി ഓട്ടോമാറ്റിക്കായി അയക്കുന്ന സർട്ടിഫിക്കറ്റുകൾ.",
+        vault_head: "പ്രൊഫൈൽ വാൾട്ട്",
+        letter_head: "അപ്പ്രൂവർ ഡെസ്കിലേക്ക് വിശദീകരണ കത്ത് അയക്കുക",
+        letter_sub: "നിങ്ങളുടെ പാസ് തടഞ്ഞുവെച്ചിട്ടുണ്ടെങ്കിൽ വിശദീകരണ കത്ത് സമർപ്പിക്കുക.",
+        lbl_subj: "വിഷയം",
+        lbl_cat: "വിഭാഗം",
+        lbl_content: "കത്തിന്റെ ഉള്ളടക്കം",
+        btn_submit_letter: "കത്ത് സമർപ്പിക്കുക",
+        submitted_letters: "സമർപ്പിച്ച കത്തുകൾ",
+        cond_head: "കണ്ടക്ടർ സ്കാനർ",
+        btn_exit: "പുറത്തുകടക്കുക",
+        admin_head: "അപ്പ്രൂവർ ഡെസ്ക്",
+        admin_sub: "പാസുകളും അപ്പീലുകളും പരിശോധിക്കുക",
+        console_head: "കണ്ടക്ടർ കൺസോൾ",
+        console_sub: "പാസ് തടഞ്ഞുവെക്കുകയോ ബ്ലാക്ക്ലിസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.",
+        btn_restrain: "പാസ് തടയുക",
+        btn_blacklist: "ബ്ലാക്ക്ലിസ്റ്റ് ചെയ്യുക",
+        otp_head: "ഡെമോ ഒടിപി സൈനിങ്",
+        otp_code: "ഡെമോ കോഡ്: 8492",
+        btn_confirm: "സ്ഥിരീകരിക്കുക"
+      },
+      hi: {
+        sub_brand: "यूनिवर्सल स्टूडेंट ट्रांजिट डेस्क",
+        nav_home: "होम",
+        nav_theme: "थीम (दिन/रात)",
+        nav_desks: "स्टाफ डेस्क",
+        hero_badge: "ऑफ़लाइन क्रिप्टोग्राफिक ट्रांजिट अथॉरिटी",
+        hero_title: "सभी छात्रों के लिए शून्य-विलंबता डिजिटल रियायतें",
+        hero_subtitle: "सुरक्षित छात्र पास।",
+        stat_offline: "ऑफ़लाइन स्टैंडअलोन",
+        stat_scan: "स्कैन सत्यापन",
+        stat_antipass: "एंटी-पासबैक",
+        stat_sec: "P-256 सुरक्षा",
+        gw_select_title: "पोर्टल चुनें",
+        gw_existing_title: "मौजूदा उपयोगकर्ता पोर्टल",
+        gw_existing_desc: "अपना सक्रिय PassX स्मार्ट QR पास और उपस्थिति लॉग एक्सेस करें।",
+        gw_new_title: "नया आवेदक पोर्टल",
+        gw_new_desc: "अपने डिजिटल ट्रांजिट रियायत आवेदन जमा करें।",
+        tab_pass: "स्मार्ट पास",
+        tab_attendance: "उपस्थिति",
+        tab_disruption: "बाधा और बहाना प्रमाण पत्र",
+        tab_appeal: "अपील पत्र डेस्क",
+        tab_vault: "प्रोफाइल वॉल्ट",
+        card_title: "PassX स्टूडेंट स्मार्ट पास",
+        date_applied: "आवेदन तिथि:",
+        date_accepted: "स्वीकृत:",
+        date_renewal: "नवीनीकरण:",
+        date_expiry: "समाप्ति:",
+        time_to_expiry: "समाप्ति में शेष:",
+        card_institution: "संस्थान: यूनिवर्सल स्टूडेंट नेटवर्क",
+        card_clearance: "मंजूरी: साफ़ (0 प्रतिबंध)",
+        btn_delete_pass: "पास हटाएं / रद्द करें",
+        app_head: "नया पारगमन रियायत आवेदन",
+        app_sub: "संस्थागत नामांकन प्रमाण स्वतः उत्पन्न करता है",
+        btn_autofill: "ऑटो-फिल",
+        btn_whatsapp: "व्हाट्सएप ओटीपी",
+        btn_back_home: "होम पर वापस जाएं",
+        lbl_name: "छात्र का पूरा नाम",
+        lbl_reg: "पंजीकरण / रोल आईडी",
+        lbl_gender: "लिंग",
+        lbl_photo: "फोटो अपलोड करें",
+        lbl_dob: "जन्म तिथि",
+        lbl_age: "आयु",
+        lbl_blood: "ब्लड ग्रुप",
+        lbl_phone: "छात्र फोन नंबर",
+        lbl_guard_name: "अभिभावक का नाम",
+        lbl_guard_rel: "संबंध",
+        lbl_guard_phone: "आपातकालीन फोन",
+        lbl_transport: "परिवहन मोड",
+        lbl_bus_pickup: "बस बोर्डिंग स्टॉप",
+        lbl_bus_drop: "बस ड्रॉपिंग स्टॉप",
+        lbl_metro_pickup: "मेट्रो बोर्डिंग स्टेशन",
+        lbl_metro_drop: "मेट्रो ड्रॉपिंग स्टेशन",
+        lbl_degree: "डिग्री स्तर",
+        lbl_home: "घर का पता",
+        lbl_inst: "परिसर का पता",
+        lbl_bonafide: "बनाफाइड प्रमाणपत्र",
+        btn_submit_app: "नया आवेदन जमा करें",
+        cal_head: "पारगमन उपस्थिति कैलेंडर",
+        cal_sub: "सुबह (AM), दोपहर (NOON), शाम (PM)",
+        cal_comp: "अनुपालन: 82%",
+        leg_scanned: "स्कैन किया गया",
+        leg_unscanned: "अस्कैनित / छूटा हुआ",
+        leg_delayed: "विलंबित / बाधित",
+        leg_holiday: "छुट्टी",
+        dis_head: "स्वतः-जारी पारगमन बाधा और बहाना प्रमाण पत्र",
+        dis_sub: "पारगमन देरी के दौरान छूटे हुए स्कैन को माफ करने के लिए ट्रांजिट अथॉरिटी द्वारा स्वचालित रूप से भेजे गए आधिकारिक प्रमाण पत्र।",
+        vault_head: "छात्र प्रोफाइल वॉल्ट",
+        letter_head: "अनुमोदक डेस्क को स्पष्टीकरण पत्र जमा करें",
+        letter_sub: "यदि आपका पास प्रतिबंधित किया गया है, तो समीक्षा के लिए स्पष्टीकरण पत्र जमा करें।",
+        lbl_subj: "विषय",
+        lbl_cat: "श्रेणी",
+        lbl_content: "पत्र की सामग्री",
+        btn_submit_letter: "पत्र जमा करें",
+        submitted_letters: "जमा किए गए अपील पत्र",
+        cond_head: "कंडक्टर स्कैनर",
+        btn_exit: "बाहर निकलें",
+        admin_head: "अनुमोदक डेस्क",
+        admin_sub: "लंबित पास अधिकृत करें",
+        console_head: "कंडक्टर कंसोल",
+        console_sub: "नियम उल्लंघन पर पास प्रतिबंधित करें।",
+        btn_restrain: "पास प्रतिबंधित करें",
+        btn_blacklist: "ब्लैकलिस्ट करें",
+        otp_head: "डेमो ओटीपी हस्ताक्षर",
+        otp_code: "डेमो कोड: 8492",
+        btn_confirm: "पुष्टि करें"
+      }
+    };
+
+    let currentLang = 'en';
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+      const dict = i18nData[lang] || i18nData.en;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          if (el.innerHTML.includes('<span>')) {
+            const spanMatch = el.innerHTML.match(/<span>.*?<\/span>/);
+            el.innerHTML = dict[key] + (spanMatch ? ' ' + spanMatch[0] : '');
+          } else {
+            el.innerText = dict[key];
+          }
+        }
+      });
+    }
 
     function getDB() {
       const data = localStorage.getItem(DB_KEY);
@@ -1030,8 +1314,7 @@
         `;
         dlSec.innerHTML = `<button class="btn-submit" onclick="downloadPassPdf()">Download Pass as PDF</button>`;
 
-        // FIX: Embed unique random nonce & timestamp in each generated QR payload to ensure uniqueness
-        const uniqueNonce = Math.random().toString(36.substring(2)) + "_" + Date.now();
+        const uniqueNonce = Math.random().toString(36).substring(2) + "_" + Date.now();
         const qrPayload = `${p.id}###${p.name}###${p.student_id}###${p.transport_mode}###${busRoute}###${p.valid_until}###${uniqueNonce}`;
         setTimeout(() => {
           const el = document.getElementById("standard-scannable-qr");
@@ -1683,7 +1966,6 @@
         return;
       }
 
-      // Extract Pass ID from QR string (format: PX-123456###Name###...)
       const parts = qrString.split('###');
       const passId = parts[0];
 
@@ -1696,13 +1978,12 @@
         return;
       }
 
-      if (scannedPass.status === 'RESTRAINED' || scannnedPass.status === 'BLACKLISTED' || scannedPass.status === 'REJECTED') {
+      if (scannedPass.status === 'RESTRAINED' || scannedPass.status === 'BLACKLISTED' || scannedPass.status === 'REJECTED') {
         if (audioFailure) audioFailure.play().catch(()=>{});
         showGPayBanner(false, "PASS SUSPENDED", "This pass has been restrained, blacklisted, or cancelled.");
         return;
       }
 
-      // Anti-Passback / Duplicate Scan Prevention (Once per route per day)
       const todayStr = new Date().toISOString().split('T')[0];
       const scanKey = `${scannedPass.id}_${todayStr}`;
       const scanLogs = getScanLogs();
@@ -1713,7 +1994,6 @@
         return;
       }
 
-      // Record scan log
       scanLogs[scanKey] = true;
       saveScanLogs(scanLogs);
 
