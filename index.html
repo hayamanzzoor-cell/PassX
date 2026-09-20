@@ -517,6 +517,10 @@
               </select>
             </div>
             <div class="form-group">
+              <label>Upload Live Selfie / Proof Photo</label>
+              <input type="file" id="reg_photo_file" accept="image/*" style="padding: 6px;" />
+            </div>
+            <div class="form-group">
               <label>Date of Birth</label>
               <input type="date" id="reg_dob" value="2004-05-12" required />
             </div>
@@ -643,9 +647,9 @@
         <div class="a4-subtitle" id="a4-doc-subtitle">Official Concession Application Verification Form</div>
       </div>
 
-      <div style="display:flex; justify-content: space-between; margin-bottom: 16px; font-size: 0.85rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">
-        <div>Reference ID: <strong id="a4-app-id">PX-0000</strong></div>
-        <div>Date Submitted: <strong id="a4-date">2026-09-01</strong></div>
+      <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 16px; font-size: 0.85rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">
+        <div>Reference ID: <strong id="a4-app-id">PX-0000</strong> | Date: <strong id="a4-date">2026-09-01</strong></div>
+        <img id="a4-student-photo" src="" alt="Student Selfie" style="width: 50px; height: 60px; object-fit: cover; border: 1px solid #0f172a; border-radius: 4px;" />
       </div>
 
       <div id="a4-regular-content">
@@ -738,7 +742,7 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v8";
+    const DB_KEY = "passx_offline_database_v9";
 
     function getDB() {
       const data = localStorage.getItem(DB_KEY);
@@ -748,6 +752,7 @@
           name: "Haya Manzoor",
           student_id: "JU-BCA-2026-081",
           gender: "Female",
+          photo: "",
           dob: "2004-05-12",
           age: 22,
           blood_group: "O+",
@@ -782,6 +787,15 @@
 
     function saveDB(passes) {
       localStorage.setItem(DB_KEY, JSON.stringify(passes));
+    }
+
+    function getScanLogs() {
+      const data = localStorage.getItem("passx_scan_logs");
+      return data ? JSON.parse(data) : {};
+    }
+
+    function saveScanLogs(logs) {
+      localStorage.setItem("passx_scan_logs", JSON.stringify(logs));
     }
 
     function getDisruptions() {
@@ -920,9 +934,9 @@
 
       const setupPhoto = (imgEl) => {
         if (!imgEl) return;
-        const avatarUrl = getAvatarSvg(p ? p.gender : 'Female');
-        imgEl.src = '/student_photo.png';
-        imgEl.onerror = () => { imgEl.src = avatarUrl; };
+        const fallbackUrl = getAvatarSvg(p ? p.gender : 'Female');
+        imgEl.src = (p && p.photo) ? p.photo : fallbackUrl;
+        imgEl.onerror = () => { imgEl.src = fallbackUrl; };
       };
       setupPhoto(document.getElementById('card-student-photo'));
 
@@ -1036,9 +1050,9 @@
 
       const imgEl = document.getElementById('vault-photo-img');
       if (imgEl) {
-        const avatarUrl = getAvatarSvg(p.gender || 'Female');
-        imgEl.src = '/student_photo.png';
-        imgEl.onerror = () => { imgEl.src = avatarUrl; };
+        const fallbackUrl = getAvatarSvg(p.gender || 'Female');
+        imgEl.src = p.photo ? p.photo : fallbackUrl;
+        imgEl.onerror = () => { imgEl.src = fallbackUrl; };
       }
     }
 
@@ -1194,46 +1208,61 @@
         regForm.addEventListener('submit', (e) => {
           e.preventDefault();
           const getVal = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
-          const passId = 'PX-' + Math.floor(100000 + Math.random() * 900000);
-          const newPass = {
-            id: passId,
-            name: getVal('reg_name'),
-            student_id: getVal('reg_student_id'),
-            gender: getVal('reg_gender'),
-            dob: getVal('reg_dob'),
-            age: getVal('reg_age'),
-            blood_group: getVal('reg_blood_group'),
-            phone: getVal('reg_phone'),
-            guardian_name: getVal('reg_guardian_name'),
-            guardian_relation: getVal('reg_guardian_relation'),
-            guardian_phone: getVal('reg_guardian_phone'),
-            transport_mode: getVal('reg_transport_mode'),
-            bus_pickup: getVal('reg_bus_pickup') || "Ernakulam North",
-            bus_drop: getVal('reg_bus_drop') || "Infopark",
-            metro_pickup: getVal('reg_metro_pickup') || "Palarivattom",
-            metro_drop: getVal('reg_metro_drop') || "Edappally",
-            degree_level: getVal('reg_degree_level'),
-            concession_rate: getVal('reg_degree_level') === 'PhD' ? '50% Subsidy' : '100% Free Pass',
-            home_address: getVal('reg_home_address'),
-            institution_address: getVal('reg_institution_address'),
-            bonafide_data: getVal('reg_bonafide_text'),
-            applied_date: new Date().toISOString().split('T')[0],
-            accepted_date: 'Pending',
-            valid_until: '2027-03-17',
-            status: 'PENDING',
-            rejection_reason: '',
-            restraint_info: '',
-            signature: ''
+          const photoInput = document.getElementById('reg_photo_file');
+          
+          const processNewPassWithPhoto = (photoBase64) => {
+            const passId = 'PX-' + Math.floor(100000 + Math.random() * 900000);
+            const newPass = {
+              id: passId,
+              name: getVal('reg_name'),
+              student_id: getVal('reg_student_id'),
+              gender: getVal('reg_gender'),
+              photo: photoBase64,
+              dob: getVal('reg_dob'),
+              age: getVal('reg_age'),
+              blood_group: getVal('reg_blood_group'),
+              phone: getVal('reg_phone'),
+              guardian_name: getVal('reg_guardian_name'),
+              guardian_relation: getVal('reg_guardian_relation'),
+              guardian_phone: getVal('reg_guardian_phone'),
+              transport_mode: getVal('reg_transport_mode'),
+              bus_pickup: getVal('reg_bus_pickup') || "Ernakulam North",
+              bus_drop: getVal('reg_bus_drop') || "Infopark",
+              metro_pickup: getVal('reg_metro_pickup') || "Palarivattom",
+              metro_drop: getVal('reg_metro_drop') || "Edappally",
+              degree_level: getVal('reg_degree_level'),
+              concession_rate: getVal('reg_degree_level') === 'PhD' ? '50% Subsidy' : '100% Free Pass',
+              home_address: getVal('reg_home_address'),
+              institution_address: getVal('reg_institution_address'),
+              bonafide_data: getVal('reg_bonafide_text'),
+              applied_date: new Date().toISOString().split('T')[0],
+              accepted_date: 'Pending',
+              valid_until: '2027-03-17',
+              status: 'PENDING',
+              rejection_reason: '',
+              restraint_info: '',
+              signature: ''
+            };
+
+            const passes = getDB();
+            passes.push(newPass);
+            saveDB(passes);
+
+            window.currentPass = newPass;
+            localStorage.setItem('passx_active_id', passId);
+            alert("Application submitted successfully! Status: PENDING. Accessing your student portal.");
+            launchExistingUserPortal();
           };
 
-          const passes = getDB();
-          passes.push(newPass);
-          saveDB(passes);
-
-          window.currentPass = newPass;
-          localStorage.setItem('passx_active_id', passId);
-          alert("Application submitted successfully! Status: PENDING. Accessing your student portal.");
-          launchExistingUserPortal();
+          if (photoInput && photoInput.files && photoInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+              processNewPassWithPhoto(evt.target.result);
+            };
+            reader.readAsDataURL(photoInput.files[0]);
+          } else {
+            processNewPassWithPhoto("");
+          }
         });
       }
 
@@ -1348,6 +1377,11 @@
       document.getElementById('a4-gphone').innerText = app.guardian_phone || '9876543211';
       document.getElementById('a4-bonafide').innerText = app.bonafide_data || 'BONAFIDE CERTIFICATE: Regular student.';
 
+      const studentPhotoEl = document.getElementById('a4-student-photo');
+      const fallbackPhotoUrl = getAvatarSvg(app.gender || 'Female');
+      studentPhotoEl.src = app.photo ? app.photo : fallbackPhotoUrl;
+      studentPhotoEl.onerror = () => { studentPhotoEl.src = fallbackPhotoUrl; };
+
       const btnApprove = document.getElementById('a4-btn-approve');
       const btnReject = document.getElementById('a4-btn-reject');
       btnApprove.style.display = 'inline-block';
@@ -1373,6 +1407,12 @@
       document.getElementById('letter-reg').innerText = item.student_id;
       document.getElementById('letter-cat').innerText = item.category;
       document.getElementById('letter-body-text').innerText = item.body;
+
+      const passes = getDB();
+      const linkedPass = passes.find(p => p.id === item.pass_id);
+      const studentPhotoEl = document.getElementById('a4-student-photo');
+      const fallbackPhotoUrl = getAvatarSvg(linkedPass ? linkedPass.gender : 'Female');
+      studentPhotoEl.src = (linkedPass && linkedPass.photo) ? linkedPass.photo : fallbackPhotoUrl;
 
       const btnApprove = document.getElementById('a4-btn-approve');
       const btnReject = document.getElementById('a4-btn-reject');
@@ -1550,9 +1590,13 @@
       doc.setFillColor(9, 13, 22);
       doc.roundedRect(30, 64, 30, 38, 2, 2, 'F');
       
-      const avatarDataUrl = getAvatarSvg(pass.gender || 'Female');
+      const avatarDataUrl = pass.photo ? pass.photo : getAvatarSvg(pass.gender || 'Female');
       try {
-        doc.addImage(avatarDataUrl, "SVG", 31, 65, 28, 36);
+        if (pass.photo && pass.photo.startsWith('data:image')) {
+          doc.addImage(pass.photo, "JPEG", 31, 65, 28, 36);
+        } else {
+          doc.addImage(avatarDataUrl, "SVG", 31, 65, 28, 36);
+        }
       } catch(e) {
         doc.setTextColor(56, 189, 248);
         doc.setFontSize(8);
@@ -1623,14 +1667,31 @@
         showGPayBanner(false, "PASS RESTRAINED / BLACKLISTED", "This transit pass has been suspended by a conductor.");
         return;
       }
+
       const isPassX = typeof qrString === 'string' && (qrString.includes('###') || qrString.includes('PX-'));
       if (!isPassX) {
         if (audioFailure) audioFailure.play().catch(()=>{});
         showGPayBanner(false, "INVALID QR CODE", "Tampered or unregistered transit token detected.");
         return;
       }
+
+      // Anti-Passback / Duplicate Scan Prevention Rule
+      const todayStr = new Date().toISOString().split('T')[0];
+      const routeKey = p ? `${p.id}_${todayStr}` : `PX_DEFAULT_${todayStr}`;
+      const scanLogs = getScanLogs();
+
+      if (scanLogs[routeKey]) {
+        if (audioFailure) audioFailure.play().catch(()=>{});
+        showGPayBanner(false, "FRAUD: SECOND SCAN DETECTED", "Pass already scanned & accepted on this route today! Duplicate entry blocked.");
+        return;
+      }
+
+      // Mark as scanned for today on this route
+      scanLogs[routeKey] = true;
+      saveScanLogs(scanLogs);
+
       if (audioSuccess) audioSuccess.play().catch(()=>{});
-      showGPayBanner(true, "ACCEPTED: VALID PASS", "Cryptographically verified in 12 ms");
+      showGPayBanner(true, "ACCEPTED: VALID PASS", "Cryptographically verified in 12 ms (First Scan Today)");
     }
 
     function showGPayBanner(isSuccess, headline, subhead) {
