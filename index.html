@@ -74,7 +74,7 @@
     main { flex: 1; max-width: 1080px; width: 100%; margin: 12px auto; padding: 0 12px; }
 
     .hero-container {
-      padding: 24px 14px;
+      padding: 32px 16px;
       text-align: center;
       background: radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 70%);
       border-radius: 16px;
@@ -82,18 +82,16 @@
       margin-bottom: 16px;
     }
     .hero-badge { display: inline-block; padding: 4px 10px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-blue); border-radius: 9999px; font-size: 0.7rem; font-weight: 700; margin-bottom: 10px; }
-    .hero-title { font-size: 1.65rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 10px; line-height: 1.25; }
+    .hero-title { font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 10px; line-height: 1.25; }
     .hero-title span { color: var(--accent-blue); }
-    .hero-subtitle { font-size: 0.85rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 18px auto; line-height: 1.45; }
+    .hero-subtitle { font-size: 0.88rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 20px auto; line-height: 1.45; }
 
-    .hero-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px; }
+    .hero-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
     .hero-stat-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-align: left; }
     .hero-stat-val { font-size: 1.2rem; font-weight: 900; color: var(--accent-blue); }
     .hero-stat-lbl { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
 
-    .hero-actions-row { display: flex; justify-content: center; gap: 8px; flex-direction: column; }
-    .hero-btn-primary { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; font-weight: 700; padding: 12px; border-radius: 10px; border: none; cursor: pointer; font-size: 0.88rem; width: 100%; }
-    .hero-btn-secondary { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-main); font-weight: 700; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 0.88rem; width: 100%; }
+    .hero-btn-primary { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; font-weight: 700; padding: 14px 28px; border-radius: 12px; border: none; cursor: pointer; font-size: 0.95rem; box-shadow: 0 10px 20px rgba(2, 132, 199, 0.3); }
 
     .tabs-nav { display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 7px 12px; font-weight: 700; font-size: 0.8rem; border-radius: 8px; cursor: pointer; white-space: nowrap; }
@@ -203,11 +201,9 @@
       header { padding: 12px 28px; }
       .brand-title { font-size: 1.35rem; }
       .btn-pill, .select-pill { padding: 7px 14px; font-size: 0.82rem; }
-      .hero-container { padding: 34px 20px; }
+      .hero-container { padding: 40px 24px; }
       .hero-title { font-size: 2.2rem; }
       .hero-stats-grid { grid-template-columns: repeat(4, 1fr); }
-      .hero-actions-row { flex-direction: row; }
-      .hero-btn-primary, .hero-btn-secondary { width: auto; }
       .form-grid { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
       .cal-header-day { font-size: 0.72rem; }
       .cal-day-box { padding: 8px 4px; min-height: 85px; }
@@ -234,7 +230,7 @@
       </select>
       <button class="btn-pill" onclick="showLandingPage()" data-i18n="nav_home">Home</button>
       <button class="btn-pill" onclick="toggleTheme()" data-i18n="nav_theme">Theme</button>
-      <button class="btn-pill btn-official" onclick="openOfficialDesksModal()" data-i18n="nav_desks">Desks</button>
+      <button class="btn-pill btn-official" onclick="openOfficialDesksModal()" data-i18n="nav_desks">Staff Desks</button>
     </div>
   </header>
 
@@ -268,10 +264,8 @@
           </div>
         </div>
 
-        <div class="hero-actions-row">
-          <button class="hero-btn-primary" onclick="launchStudentPassDesk()" data-i18n="btn_launch">Launch Student Pass</button>
-          <button class="hero-btn-secondary" onclick="launchApplicationDesk()" data-i18n="btn_apply">Apply for New Pass</button>
-          <button class="hero-btn-secondary" onclick="openOfficialDesksModal()" data-i18n="btn_staff">Staff Desks</button>
+        <div>
+          <button class="hero-btn-primary" onclick="launchStudentPassDesk()" data-i18n="btn_launch">Access Student Pass Portal</button>
         </div>
       </div>
     </div>
@@ -322,7 +316,7 @@
             <div class="route-box" id="card-route-box">
               <div><strong>Bus Route:</strong> <span id="card-bus-route">Ernakulam North -> Infopark</span></div>
               <div><strong>Metro Route:</strong> <span id="card-metro-route">Kaloor Metro -> Edappally Metro</span></div>
-              <div data-i18n="card_institution">Institution: Jain University, Kochi Campus</div>
+              <div data-i18n="card_institution">Institution: Universal Student Network</div>
               <div data-i18n="card_clearance">Clearance: Cleared (0 Restraints)</div>
             </div>
 
@@ -515,14 +509,30 @@
       <!-- 5. Profile Vault -->
       <div id="sec-profile-view" style="display: none;">
         <div class="card">
-          <h3 style="color: var(--accent-blue); margin-bottom: 14px; font-size: 1.1rem;" data-i18n="vault_head">Student Profile Vault</h3>
-          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px;">
-            <img id="prof-photo-img" class="student-photo-img" src="" alt="Profile" />
-            <div>
-              <h2 id="prof-full-name" style="font-size: 1.15rem;">Haya Manzoor</h2>
-              <div style="color: var(--accent-blue); font-size: 0.8rem;" id="prof-reg-id">JU-BCA-2026-081</div>
+          <h3 style="color: var(--accent-blue); margin-bottom: 16px; font-size: 1.1rem;" data-i18n="vault_head">Student Profile Vault</h3>
+          <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
+            <img id="vault-photo-img" class="student-photo-img" src="" alt="Profile" />
+            <div style="font-size: 0.85rem; line-height: 1.5;">
+              <h2 id="vault-full-name" style="font-size: 1.2rem; font-weight: 800; color: var(--accent-blue);">Haya Manzoor</h2>
+              <div>Reg ID: <strong id="vault-reg-id">JU-BCA-2026-081</strong></div>
+              <div>Pass ID: <strong id="vault-pass-id">PX-146224</strong></div>
+              <div>Status: <span id="vault-status" style="color: var(--accent-green); font-weight: 700;">APPROVED</span></div>
             </div>
           </div>
+
+          <div class="dates-lifecycle-grid" style="margin-bottom: 14px;">
+            <div>Age / Blood: <strong id="vault-blood">22 (O+)</strong></div>
+            <div>Contact: <strong id="vault-phone">9876543210</strong></div>
+            <div>Guardian: <strong id="vault-guardian">Manzoor Ahmad (Father)</strong></div>
+            <div>Valid Until: <strong id="vault-expiry" style="color:#f87171;">2027-03-17</strong></div>
+          </div>
+
+          <div class="route-box">
+            <div><strong>Home Address:</strong> <span id="vault-home">Meadowlands, Ernakulam North</span></div>
+            <div><strong>Institution:</strong> <span id="vault-inst">Jain University, Kochi Campus</span></div>
+            <div><strong>Bus Corridor:</strong> <span id="vault-bus">Ernakulam North -> Infopark</span></div>
+          </div>
+
           <button type="button" class="btn-danger" style="margin-top: 16px;" onclick="deleteCurrentPass()" data-i18n="btn_delete_pass">
             Delete / Revoke Pass
           </button>
@@ -583,15 +593,14 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v4";
+    const DB_KEY = "passx_offline_database_v5";
 
-    // Multilingual Dictionaries
     const i18nData = {
       en: {
         sub_brand: "Universal Student Transit Desk",
         nav_home: "Home",
         nav_theme: "Theme",
-        nav_desks: "Desks",
+        nav_desks: "Staff Desks",
         hero_badge: "OFFLINE CRYPTOGRAPHIC TRANSIT AUTHORITY",
         hero_title: "Zero-Latency Digital Concessions for <span>All Students</span>",
         hero_subtitle: "Tamper-proof student transit concession passes backed by browser LocalStorage engine, offline optical QR conductor validation, and integrated attendance log verification.",
@@ -599,9 +608,7 @@
         stat_scan: "Scan Verification",
         stat_antipass: "Anti-Passback",
         stat_sec: "P-256 Security",
-        btn_launch: "Launch Student Pass",
-        btn_apply: "Apply for New Pass",
-        btn_staff: "Staff Desks",
+        btn_launch: "Access Student Pass Portal",
         tab_pass: "Smart Pass",
         tab_apply: "Application",
         tab_attendance: "Attendance",
@@ -667,7 +674,7 @@
         sub_brand: "യൂണിവേഴ്സൽ സ്റ്റുഡൻ്റ് ട്രാൻസിറ്റ് ഡെസ്ക്",
         nav_home: "ഹോം",
         nav_theme: "തീം",
-        nav_desks: "ഡെസ്കുകൾ",
+        nav_desks: "ജീവനക്കാരുടെ ഡെസ്ക്",
         hero_badge: "ഓഫ്‌ലൈൻ ക്രിപ്റ്റോഗ്രാഫിക് ട്രാൻസിറ്റ് അതോറിറ്റി",
         hero_title: "എല്ലാ വിദ്യാർത്ഥികൾക്കുമുള്ള ഡിജിറ്റൽ യാത്രാക്കൂലി ഇളവുകൾ",
         hero_subtitle: "ബ്രൗസർ ലോക്കൽ സ്റ്റോറേജ് എഞ്ചിൻ, ഓഫ്‌ലൈൻ ഒപ്റ്റിക്കൽ ക്യുആർ വെരിഫിക്കേഷൻ എന്നിവ പിന്തുണയ്ക്കുന്ന സുരക്ഷിത വിദ്യാർത്ഥി യാത്രാക്കൂലി പാസുകൾ.",
@@ -675,9 +682,7 @@
         stat_scan: "സ്കാൻ വെരിഫിക്കേഷൻ",
         stat_antipass: "ആന്റി-പാസ്ബാക്ക്",
         stat_sec: "P-256 സുരക്ഷ",
-        btn_launch: "സ്റ്റുഡന്റ് പാസ് തുറക്കുക",
-        btn_apply: "പുതിയ പാസിന് അപേക്ഷിക്കുക",
-        btn_staff: "ജീവനക്കാരുടെ ഡെസ്ക്",
+        btn_launch: "സ്റ്റുഡന്റ് പാസ് പോർട്ടൽ തുറക്കുക",
         tab_pass: "സ്മാർട്ട് പാസ്",
         tab_apply: "അപേക്ഷ",
         tab_attendance: "ഹാജർ",
@@ -743,7 +748,7 @@
         sub_brand: "यूनिवर्सल स्टूडेंट ट्रांजिट डेस्क",
         nav_home: "होम",
         nav_theme: "थीम",
-        nav_desks: "डेस्क",
+        nav_desks: "स्टाफ डेस्क",
         hero_badge: "ऑफ़लाइन क्रिप्टोग्राफिक ट्रांजिट अथॉरिटी",
         hero_title: "सभी छात्रों के लिए शून्य-विलंबता डिजिटल रियायतें",
         hero_subtitle: "ब्राउज़र लोकल स्टोरेज इंजन और ऑफ़लाइन ऑप्टिकल क्यूआर सत्यापन द्वारा समर्थित सुरक्षित छात्र पास।",
@@ -751,9 +756,7 @@
         stat_scan: "स्कैन सत्यापन",
         stat_antipass: "एंटी-पासबैक",
         stat_sec: "P-256 सुरक्षा",
-        btn_launch: "स्टूडेंट पास लॉन्च करें",
-        btn_apply: "नया पास आवेदन करें",
-        btn_staff: "स्टाफ डेस्क",
+        btn_launch: "स्टूडेंट पास पोर्टल खोलें",
         tab_pass: "स्मार्ट पास",
         tab_apply: "आवेदन",
         tab_attendance: "उपस्थिति",
@@ -999,7 +1002,6 @@
         imgEl.onerror = () => { imgEl.src = EMBEDDED_PORTRAIT_DATA_URL; };
       };
       setupPhoto(document.getElementById('card-student-photo'));
-      setupPhoto(document.getElementById('prof-photo-img'));
 
       if (!p) {
         statusBadge.className = 'badge-pending';
@@ -1066,10 +1068,24 @@
 
     function populateProfileVault() {
       const p = window.currentPass;
-      if (!p) return;
-      document.getElementById('prof-full-name').innerText = p.name;
-      document.getElementById('prof-reg-id').innerText = p.student_id;
-      const imgEl = document.getElementById('prof-photo-img');
+      if (!p) {
+        document.getElementById('vault-full-name').innerText = "No Active Pass Found";
+        return;
+      }
+      document.getElementById('vault-full-name').innerText = p.name;
+      document.getElementById('vault-reg-id').innerText = p.student_id;
+      document.getElementById('vault-pass-id').innerText = p.id;
+      document.getElementById('vault-status').innerText = p.status;
+      document.getElementById('vault-status').style.color = p.status === 'APPROVED' ? 'var(--accent-green)' : 'var(--accent-amber)';
+      document.getElementById('vault-blood').innerText = `${p.age || 22} (${p.blood_group || 'O+'})`;
+      document.getElementById('vault-phone').innerText = p.phone || '9876543210';
+      document.getElementById('vault-guardian').innerText = `${p.guardian_name || 'Guardian'} (${p.guardian_relation || 'Parent'})`;
+      document.getElementById('vault-expiry').innerText = p.valid_until || '2027-03-17';
+      document.getElementById('vault-home').innerText = p.home_address || 'Ernakulam North';
+      document.getElementById('vault-inst').innerText = p.institution_address || 'Jain University, Kochi';
+      document.getElementById('vault-bus').innerText = `${p.bus_pickup || 'Ernakulam North'} -> ${p.bus_drop || 'Infopark'}`;
+
+      const imgEl = document.getElementById('vault-photo-img');
       if (imgEl) {
         imgEl.src = '/student_photo.png';
         imgEl.onerror = () => { imgEl.src = EMBEDDED_PORTRAIT_DATA_URL; };
@@ -1082,29 +1098,28 @@
       const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
       let html = days.map(d => `<div class="cal-header-day">${d}</div>`).join('');
       
-      // Attendance pattern where MOST afternoon (NOON) slots are unscanned in red color
       const shiftPatterns = [
-        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     // Day 1
-        { am: 'scanned', noon: 'unscanned', pm: 'unscanned' },   // Day 2
-        { am: 'delayed', noon: 'unscanned', pm: 'scanned' },     // Day 3
-        { am: 'scanned', noon: 'holiday',   pm: 'holiday' },     // Day 4 (Holiday)
-        { am: 'unscanned', noon: 'unscanned', pm: 'scanned' },   // Day 5
-        { am: 'scanned', noon: 'unscanned', pm: 'delayed' },     // Day 6
-        { am: 'holiday', noon: 'holiday',   pm: 'holiday' },     // Day 7 (Sunday)
-        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     // Day 8
-        { am: 'scanned', noon: 'unscanned', pm: 'unscanned' },   // Day 9
-        { am: 'delayed', noon: 'unscanned', pm: 'scanned' },     // Day 10
-        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     // Day 11
-        { am: 'unscanned', noon: 'unscanned', pm: 'unscanned' }, // Day 12
-        { am: 'scanned', noon: 'unscanned', pm: 'delayed' },     // Day 13
-        { am: 'holiday', noon: 'holiday',   pm: 'holiday' },     // Day 14 (Sunday)
-        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     // Day 15
-        { am: 'scanned', noon: 'unscanned', pm: 'unscanned' },   // Day 16
-        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     // Day 17
-        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     // Day 18
-        { am: 'unscanned', noon: 'unscanned', pm: 'unscanned' }, // Day 19
-        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     // Day 20
-        { am: 'holiday', noon: 'holiday',   pm: 'holiday' }      // Day 21 (Sunday)
+        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     
+        { am: 'scanned', noon: 'unscanned', pm: 'unscanned' },   
+        { am: 'delayed', noon: 'unscanned', pm: 'scanned' },     
+        { am: 'scanned', noon: 'holiday',   pm: 'holiday' },     
+        { am: 'unscanned', noon: 'unscanned', pm: 'scanned' },   
+        { am: 'scanned', noon: 'unscanned', pm: 'delayed' },     
+        { am: 'holiday', noon: 'holiday',   pm: 'holiday' },     
+        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     
+        { am: 'scanned', noon: 'unscanned', pm: 'unscanned' },   
+        { am: 'delayed', noon: 'unscanned', pm: 'scanned' },     
+        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     
+        { am: 'unscanned', noon: 'unscanned', pm: 'unscanned' }, 
+        { am: 'scanned', noon: 'unscanned', pm: 'delayed' },     
+        { am: 'holiday', noon: 'holiday',   pm: 'holiday' },     
+        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     
+        { am: 'scanned', noon: 'unscanned', pm: 'unscanned' },   
+        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     
+        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     
+        { am: 'unscanned', noon: 'unscanned', pm: 'unscanned' }, 
+        { am: 'scanned', noon: 'unscanned', pm: 'scanned' },     
+        { am: 'holiday', noon: 'holiday',   pm: 'holiday' }      
       ];
 
       for (let i = 1; i <= 21; i++) {
