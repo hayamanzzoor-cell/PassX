@@ -519,7 +519,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label data-i18n="lbl_photo">Upload Live Selfie / Profile Photo (Optional)</label>
+              <label data-i18n="lbl_photo">Upload Live Selfie / Profile Photo (Optional - Auto Avatar if empty)</label>
               <input type="file" id="reg_photo_file" accept="image/*" style="padding: 6px;" />
             </div>
             <div class="form-group">
@@ -756,7 +756,7 @@
   <div id="gpay-modal" class="gpay-overlay">
     <div class="gpay-card">
       <div class="gpay-icon-circle" id="gpay-status-icon">✓</div>
-      <div class="gpay-headline" id="gpay-headline">HAPPY JOURNEY: PASS VERIFIED</div>
+      <div class="gpay-headline" id="gpay-headline">HAPPY JOURNEY, PASS VERIFIED</div>
       <div class="gpay-subhead" id="gpay-subhead" style="font-size:0.78rem;">Cryptographically verified</div>
     </div>
   </div>
@@ -766,7 +766,7 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v23";
+    const DB_KEY = "passx_offline_database_v24";
 
     const i18nData = {
       en: {
@@ -1016,15 +1016,15 @@
         btn_submit_letter: "पत्र जमा करें",
         submitted_letters: "जमा किए गए अपील पत्र",
         cond_head: "കണ്ടക്ടർ സ്കാനർ",
-        btn_exit: "പുറത്തുകടക്കുക",
+        btn_exit: "बाहर निकलें",
         admin_head: "अनुमोदक डेस्क",
-        admin_sub: "പാസുകളും അപ്പീലുകളും പരിശോധിക്കുക",
+        admin_sub: "लंबित पास अधिकृत करें",
         console_head: "കണ്ടക്ടർ കൺസോൾ",
-        console_sub: "പാസ് തടഞ്ഞുവെക്കുകയോ ബ്ലാക്ക്ലിസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.",
-        btn_restrain: "പാസ് തടയുക",
-        btn_blacklist: "ബ്ലാക്ക്ലിസ്റ്റ് ചെയ്യുക",
+        console_sub: "नियम उल्लंघन पर पास प्रतिबंधित करें।",
+        btn_restrain: "पास प्रतिबंधित करें",
+        btn_blacklist: "ब्लैकलिस्ट करें",
         otp_head: "ഡെമോ ഒടിപി സൈനിങ്",
-        otp_code: "ഡെമോ കോഡ്: 8492",
+        otp_code: "Demo Code: 8492",
         btn_confirm: "സ്ഥിരീകരിക്കുക"
       }
     };
@@ -1093,12 +1093,12 @@
     }
 
     function getScanLogs() {
-      const data = localStorage.getItem("passx_scan_logs_v24");
+      const data = localStorage.getItem("passx_scan_logs_v25");
       return data ? JSON.parse(data) : {};
     }
 
     function saveScanLogs(logs) {
-      localStorage.setItem("passx_scan_logs_v24", JSON.stringify(logs));
+      localStorage.setItem("passx_scan_logs_v25", JSON.stringify(logs));
     }
 
     function getDisruptions() {
@@ -1549,7 +1549,8 @@
           const photoInput = document.getElementById('reg_photo_file');
           
           const processNewPassWithPhoto = (photoBase64) => {
-            const passes = getDB();
+            const existingJson = localStorage.getItem(DB_KEY);
+            let passes = existingJson ? JSON.parse(existingJson) : getDB();
             const seqNum = String(passes.length + 1).padStart(2, '0');
             const passId = `PSX26${seqNum}`;
 
@@ -1597,7 +1598,25 @@
           if (photoInput && photoInput.files && photoInput.files[0]) {
             const reader = new FileReader();
             reader.onload = function(evt) {
-              processNewPassWithPhoto(evt.target.result);
+              const img = new Image();
+              img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const MAX_WIDTH = 150;
+                const MAX_HEIGHT = 180;
+                let width = img.width;
+                let height = img.height;
+                if (width > height) {
+                  if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                } else {
+                  if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+                processNewPassWithPhoto(canvas.toDataURL('image/jpeg', 0.8));
+              };
+              img.src = evt.target.result;
             };
             reader.readAsDataURL(photoInput.files[0]);
           } else {
@@ -2075,7 +2094,7 @@
       saveScanLogs(scanLogs);
 
       if (audioSuccess) audioSuccess.play().catch(()=>{});
-      showGPayBanner(true, "HAPPY JOURNEY, PASS VERIFIED", `Cryptographically verified in 12 ms (${selectedRoute})`);
+      showGPayBanner(true, "HAPPY JOURNEY: PASS VERIFIED", `Cryptographically verified in 12 ms (${selectedRoute})`);
     }
 
     function showGPassNotVerified() {
