@@ -453,7 +453,7 @@
       <!-- 5. Profile Vault -->
       <div id="sec-profile-view" style="display: none;">
         <div class="card">
-          <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="vault_head">Student Profile Vault</h3>
+          <h3 style="color: var(--accent-blue); margin-bottom: 16px; font-size: 1.1rem;" data-i18n="vault_head">Student Profile Vault</h3>
           <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
             <img id="vault-photo-img" class="student-photo-img" src="" alt="Profile" />
             <div style="font-size: 0.85rem; line-height: 1.5;">
@@ -519,7 +519,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label data-i18n="lbl_photo">Upload Live Selfie / Profile Photo (Optional / Auto-Avatar if empty)</label>
+              <label data-i18n="lbl_photo">Upload Live Selfie / Profile Photo (Optional)</label>
               <input type="file" id="reg_photo_file" accept="image/*" style="padding: 6px;" />
             </div>
             <div class="form-group">
@@ -766,7 +766,7 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v20";
+    const DB_KEY = "passx_offline_database_v21";
 
     const i18nData = {
       en: {
@@ -1000,12 +1000,12 @@
         btn_submit_app: "नया आवेदन जमा करें",
         cal_head: "पारगमन उपस्थिति कैलेंडर",
         cal_sub: "सुबह (AM), दोपहर (NOON), शाम (PM)",
-        cal_comp: "കംപ്ലയൻസ്: 82%",
-        leg_scanned: "സ്കാൻ ചെയ്തു",
+        cal_comp: "अनुपालन: 82%",
+        leg_scanned: "स्कैन किया गया",
         leg_unscanned: "അस्कैनित / छूटा हुआ",
-        leg_delayed: "വൈകി / തടസ്സപ്പെട്ടു",
-        leg_holiday: "അവധി",
-        dis_head: "സ്वतः-जारी पारगमन बाधा और बहाना प्रमाण पत्र",
+        leg_delayed: "विलंबित / बाधित",
+        leg_holiday: "छुट्टी",
+        dis_head: "स्वतः-जारी पारगमन बाधा और बहाना प्रमाण पत्र",
         dis_sub: "पारगमन देरी के दौरान छूटे हुए स्कैन को माफ करने के लिए ट्रांजिट अथॉरिटी द्वारा स्वचालित रूप से भेजे गए आधिकारिक प्रमाण पत्र।",
         vault_head: "छात्र प्रोफाइल वॉल्ट",
         letter_head: "अनुमोदक डेस्क को स्पष्टीकरण पत्र जमा करें",
@@ -1018,13 +1018,13 @@
         cond_head: "കണ്ടക്ടർ സ്കാനർ",
         btn_exit: "പുറത്തുകടക്കുക",
         admin_head: "अनुमोदक डेस्क",
-        admin_sub: "പാസുകളും അപ്പീലുകളും പരിശോധിക്കുക",
+        admin_sub: "लंबित पास अधिकृत करें",
         console_head: "കണ്ടക്ടർ കൺസോൾ",
-        console_sub: "പാസ് തടഞ്ഞുവെക്കുകയോ ബ്ലാക്ക്ലിസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.",
-        btn_restrain: "പാസ് തടയുക",
-        btn_blacklist: "ബ്ലാക്ക്ലിസ്റ്റ് ചെയ്യുക",
+        console_sub: "नियम उल्लंघन पर पास प्रतिबंधित करें।",
+        btn_restrain: "पास प्रतिबंधित करें",
+        btn_blacklist: "ब्लैकलिस्ट करें",
         otp_head: "ഡെമോ ഒടിപി സൈനിങ്",
-        otp_code: "Demo Code: 8492",
+        otp_code: "ഡെമോ കോഡ്: 8492",
         btn_confirm: "സ്ഥിരീകരിക്കുക"
       }
     };
@@ -1093,12 +1093,12 @@
     }
 
     function getScanLogs() {
-      const data = localStorage.getItem("passx_scan_logs_v20");
+      const data = localStorage.getItem("passx_scan_logs_v21");
       return data ? JSON.parse(data) : {};
     }
 
     function saveScanLogs(logs) {
-      localStorage.setItem("passx_scan_logs_v20", JSON.stringify(logs));
+      localStorage.setItem("passx_scan_logs_v21", JSON.stringify(logs));
     }
 
     function getDisruptions() {
@@ -1572,7 +1572,7 @@
               metro_pickup: getVal('reg_metro_pickup') || "Palarivattom",
               metro_drop: getVal('reg_metro_drop') || "Edappally",
               degree_level: getVal('reg_degree_level'),
-              concession_rate: getVal('reg_degree_level'] === 'PhD' ? '50% Subsidy' : '100% Free Pass',
+              concession_rate: getVal('reg_degree_level') === 'PhD' ? '50% Subsidy' : '100% Free Pass',
               home_address: getVal('reg_home_address'),
               institution_address: getVal('reg_institution_address'),
               bonafide_data: getVal('reg_bonafide_text'),
@@ -2040,7 +2040,6 @@
       const routeSelect = document.getElementById('conductor_route_select');
       const selectedRoute = routeSelect ? routeSelect.value : 'Default Route';
 
-      // Foolproof recognition: accept any PassX token or fallback to active pass
       const isPassX = typeof scannedData === 'string' && (scannedData.includes('###') || scannedData.includes('PSX') || scannedData.includes('PX-') || scannedData === '8492' || scannedData.length >= 6);
       if (!isPassX) {
         if (audioFailure) audioFailure.play().catch(()=>{});
