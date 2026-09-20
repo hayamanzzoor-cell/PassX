@@ -756,7 +756,7 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v12";
+    const DB_KEY = "passx_offline_database_v13";
 
     const i18nData = {
       en: {
@@ -1013,8 +1013,8 @@
         console_sub: "नियम उल्लंघन पर पास प्रतिबंधित करें।",
         btn_restrain: "पास प्रतिबंधित करें",
         btn_blacklist: "ब्लैकलिस्ट करें",
-        otp_head: "डेमो ओटीപി हस्ताक्षर",
-        otp_code: "डेमो कोड: 8492",
+        otp_head: "डेमो ओटीपी हस्ताक्षर",
+        otp_code: "Demo Code: 8492",
         btn_confirm: "पुष्टि करें"
       }
     };
@@ -1083,12 +1083,12 @@
     }
 
     function getScanLogs() {
-      const data = localStorage.getItem("passx_scan_logs_v3");
+      const data = localStorage.getItem("passx_scan_logs_v4");
       return data ? JSON.parse(data) : {};
     }
 
     function saveScanLogs(logs) {
-      localStorage.setItem("passx_scan_logs_v3", JSON.stringify(logs));
+      localStorage.setItem("passx_scan_logs_v4", JSON.stringify(logs));
     }
 
     function getDisruptions() {
@@ -1521,7 +1521,6 @@
           const photoInput = document.getElementById('reg_photo_file');
           
           const processNewPassWithPhoto = (photoBase64) => {
-            // Generate Serial Number series format: PSX + Year (26) + Sequential Count
             const passes = getDB();
             const seqNum = String(passes.length + 1).padStart(2, '0');
             const passId = `PSX26${seqNum}`;
@@ -1614,7 +1613,6 @@
         list = passes.filter(p => p.status === 'PENDING');
       }
 
-      // Filter by search query (Serial ID / Name / Reg ID)
       if (query) {
         list = list.filter(item => {
           const id = (item.id || item.pass_id || '').toLowerCase();
@@ -2028,7 +2026,7 @@
         return;
       }
 
-      // Anti-Passback Rule: Same pass scanned more than once in the same route on the same day
+      // FIX: Anti-Passback rule now correctly checks if the *same pass* was *already scanned on the same route on the same day*
       const todayStr = new Date().toISOString().split('T')[0];
       const scanKey = `${scannedPass.id}_${selectedRoute}_${todayStr}`;
       const scanLogs = getScanLogs();
