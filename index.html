@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -15,20 +15,6 @@
 
   <style>
     :root {
-      --bg-base: #070c18;
-      --bg-surface: #0f1a30;
-      --bg-card: #182848;
-      --border: #22375d;
-      --accent-blue: #38bdf8;
-      --accent-green: #22c55e;
-      --accent-amber: #f59e0b;
-      --accent-red: #ef4444;
-      --accent-grey: #64748b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-    }
-
-    [data-theme="light"] {
       --bg-base: #f1f5f9;
       --bg-surface: #ffffff;
       --bg-card: #e2e8f0;
@@ -40,6 +26,20 @@
       --accent-grey: #94a3b8;
       --text-main: #0f172a;
       --text-muted: #64748b;
+    }
+
+    [data-theme="dark"] {
+      --bg-base: #070c18;
+      --bg-surface: #0f1a30;
+      --bg-card: #182848;
+      --border: #22375d;
+      --accent-blue: #38bdf8;
+      --accent-green: #22c55e;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-grey: #64748b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -80,12 +80,12 @@
     .hero-container {
       padding: 32px 16px;
       text-align: center;
-      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 70%);
+      background: radial-gradient(circle at top, rgba(2, 132, 199, 0.08), transparent 70%);
       border-radius: 16px;
       border: 1px solid var(--border);
       margin-bottom: 16px;
     }
-    .hero-badge { display: inline-block; padding: 4px 10px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-blue); border-radius: 9999px; font-size: 0.7rem; font-weight: 700; margin-bottom: 10px; }
+    .hero-badge { display: inline-block; padding: 4px 10px; background: rgba(2, 132, 199, 0.1); border: 1px solid rgba(2, 132, 199, 0.3); color: var(--accent-blue); border-radius: 9999px; font-size: 0.7rem; font-weight: 700; margin-bottom: 10px; }
     .hero-title { font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 10px; line-height: 1.25; }
     .hero-title span { color: var(--accent-blue); }
     .hero-subtitle { font-size: 0.88rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 20px auto; line-height: 1.45; }
@@ -104,8 +104,9 @@
     .tabs-nav { display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 7px 12px; font-weight: 700; font-size: 0.8rem; border-radius: 8px; cursor: pointer; white-space: nowrap; }
     .tab-btn.active { background: var(--bg-surface); color: var(--accent-blue); border: 1px solid var(--border); }
+    .tab-btn.disabled { opacity: 0.4; pointer-events: none; }
 
-    .card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); margin-bottom: 16px; }
+    .card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 16px; }
 
     .smart-card-wrap { display: flex; justify-content: center; margin-bottom: 16px; width: 100%; }
     .smart-card {
@@ -116,19 +117,19 @@
       border-radius: 16px;
       padding: 18px;
       color: #fff;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
       position: relative;
     }
     .smart-card.blacklisted {
-      background: linear-gradient(145deg, #1e293b, #334155);
+      background: linear-gradient(145deg, #334155, #475569);
       border-color: #64748b;
-      filter: grayscale(90%);
+      filter: grayscale(100%);
     }
 
     .smart-card-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 12px; gap: 6px; }
     .badge-approved { background: #166534; color: #4ade80; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 9999px; white-space: nowrap; }
     .badge-pending { background: #854d0e; color: #fde047; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 9999px; white-space: nowrap; }
-    .badge-blacklisted { background: #475569; color: #cbd5e1; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 9999px; white-space: nowrap; }
+    .badge-blacklisted { background: #334155; color: #cbd5e1; font-size: 0.68rem; font-weight: 800; padding: 3px 8px; border-radius: 9999px; white-space: nowrap; }
 
     .student-body { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
     .student-photo-img {
@@ -162,6 +163,7 @@
       font-size: 0.76rem;
       line-height: 1.4;
       margin-bottom: 14px;
+      color: #fff;
     }
 
     .qr-container { background: #ffffff; padding: 8px; border-radius: 10px; display: inline-block; }
@@ -259,13 +261,8 @@
     </div>
 
     <div class="nav-actions">
-      <select id="language-selector" class="select-pill" onchange="changeLanguage(this.value)">
-        <option value="en">English</option>
-        <option value="ml">മലയാളം (Malayalam)</option>
-        <option value="hi">हिन्दी (Hindi)</option>
-      </select>
       <button class="btn-pill" onclick="showLandingPage()">Home</button>
-      <button class="btn-pill" onclick="toggleTheme()">Theme</button>
+      <button class="btn-pill" onclick="toggleTheme()">Theme (Day/Night)</button>
       <button class="btn-pill btn-official" onclick="openOfficialDesksModal()">Staff Desks</button>
     </div>
   </header>
@@ -377,9 +374,9 @@
         </div>
       </div>
 
-      <!-- 2. Attendance Calendar View -->
+      <!-- 2. Attendance Calendar View (Locked if Rejected/Restrained) -->
       <div id="sec-calendar-view" style="display: none;">
-        <div class="card">
+        <div class="card" id="calendar-card-wrap">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div>
               <h3 style="color: var(--accent-blue); font-size: 1.1rem;">Transit Attendance Calendar</h3>
@@ -399,9 +396,9 @@
         </div>
       </div>
 
-      <!-- 3. Disruption & Excuse View -->
+      <!-- 3. Disruption & Excuse View (Locked if Rejected/Restrained) -->
       <div id="sec-excuse-view" style="display: none;">
-        <div class="card">
+        <div class="card" id="disruption-card-wrap">
           <div style="margin-bottom: 14px;">
             <h3 style="color: var(--accent-blue); font-size: 1.1rem;">Auto-Issued Transit Disruption &amp; Excuse Certificates</h3>
             <p style="font-size: 0.76rem; color: var(--text-muted);">Official certificates automatically pushed by the Transit Authority to excuse missed scans during transit delays.</p>
@@ -517,8 +514,8 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Upload Live Selfie / Proof Photo</label>
-              <input type="file" id="reg_photo_file" accept="image/*" style="padding: 6px;" />
+              <label>Upload Live Selfie / Profile Photo (Required)</label>
+              <input type="file" id="reg_photo_file" accept="image/*" style="padding: 6px;" required />
             </div>
             <div class="form-group">
               <label>Date of Birth</label>
@@ -742,7 +739,7 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v9";
+    const DB_KEY = "passx_offline_database_v10";
 
     function getDB() {
       const data = localStorage.getItem(DB_KEY);
@@ -790,12 +787,12 @@
     }
 
     function getScanLogs() {
-      const data = localStorage.getItem("passx_scan_logs");
+      const data = localStorage.getItem("passx_scan_logs_v2");
       return data ? JSON.parse(data) : {};
     }
 
     function saveScanLogs(logs) {
-      localStorage.setItem("passx_scan_logs", JSON.stringify(logs));
+      localStorage.setItem("passx_scan_logs_v2", JSON.stringify(logs));
     }
 
     function getDisruptions() {
@@ -885,19 +882,35 @@
 
     function toggleTheme() {
       const html = document.documentElement;
-      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
       html.setAttribute('data-theme', next);
       localStorage.setItem('passx_theme', next);
     }
 
     function switchStudentTab(tabId) {
+      const p = window.currentPass;
+      const isRestricted = p && (p.status === 'REJECTED' || p.status === 'RESTRAINED' || p.status === 'BLACKLISTED' || p.status === 'PENDING');
+
       const tabs = ['pass-view', 'calendar-view', 'excuse-view', 'letter-view', 'profile-view'];
       tabs.forEach(t => {
         const sec = document.getElementById('sec-' + t);
         const btn = document.getElementById('tab-btn-' + t.split('-')[0]);
         if (sec) sec.style.display = 'none';
-        if (btn) btn.classList.remove('active');
+        if (btn) {
+          btn.classList.remove('active');
+          if ((t === 'calendar-view' || t === 'excuse-view') && isRestricted) {
+            btn.classList.add('disabled');
+          } else {
+            btn.classList.remove('disabled');
+          }
+        }
       });
+
+      if ((tabId === 'calendar-view' || tabId === 'excuse-view') && isRestricted) {
+        alert("Access denied: You do not have an active approved pass. Attendance and disruption logs are locked.");
+        tabId = 'pass-view';
+      }
+
       const activeSec = document.getElementById('sec-' + tabId);
       const activeBtn = document.getElementById('tab-btn-' + tabId.split('-')[0]);
       if (activeSec) activeSec.style.display = 'block';
@@ -1013,11 +1026,13 @@
         statusBadge.innerText = 'APPROVED (ACTIVE)';
         qrSec.innerHTML = `
           <div class="qr-container"><div id="standard-scannable-qr"></div></div>
-          <div style="font-size: 0.68rem; color: #94a3b8; margin-top: 6px;">ISO/IEC 18004 QR (ECDSA Verified)</div>
+          <div style="font-size: 0.68rem; color: #94a3b8; margin-top: 6px;">ISO/IEC 18004 QR (ECDSA Verified - Unique Nonce)</div>
         `;
         dlSec.innerHTML = `<button class="btn-submit" onclick="downloadPassPdf()">Download Pass as PDF</button>`;
 
-        const qrPayload = `${p.id}###${p.name}###${p.student_id}###${p.transport_mode}###${busRoute}###${p.valid_until}`;
+        // FIX: Embed unique random nonce & timestamp in each generated QR payload to ensure uniqueness
+        const uniqueNonce = Math.random().toString(36.substring(2)) + "_" + Date.now();
+        const qrPayload = `${p.id}###${p.name}###${p.student_id}###${p.transport_mode}###${busRoute}###${p.valid_until}###${uniqueNonce}`;
         setTimeout(() => {
           const el = document.getElementById("standard-scannable-qr");
           if (el) {
@@ -1261,7 +1276,7 @@
             };
             reader.readAsDataURL(photoInput.files[0]);
           } else {
-            processNewPassWithPhoto("");
+            alert("Please attach a profile photo / selfie for verification.");
           }
         });
       }
@@ -1590,11 +1605,11 @@
       doc.setFillColor(9, 13, 22);
       doc.roundedRect(30, 64, 30, 38, 2, 2, 'F');
       
-      const avatarDataUrl = pass.photo ? pass.photo : getAvatarSvg(pass.gender || 'Female');
       try {
         if (pass.photo && pass.photo.startsWith('data:image')) {
           doc.addImage(pass.photo, "JPEG", 31, 65, 28, 36);
         } else {
+          const avatarDataUrl = getAvatarSvg(pass.gender || 'Female');
           doc.addImage(avatarDataUrl, "SVG", 31, 65, 28, 36);
         }
       } catch(e) {
@@ -1658,15 +1673,8 @@
     }
 
     function verifyPassInBrowser(qrString) {
-      const p = window.currentPass;
       const audioSuccess = document.getElementById('audio-success');
       const audioFailure = document.getElementById('audio-failure');
-
-      if (p && (p.status === 'RESTRAINED' || p.status === 'BLACKLISTED')) {
-        if (audioFailure) audioFailure.play().catch(()=>{});
-        showGPayBanner(false, "PASS RESTRAINED / BLACKLISTED", "This transit pass has been suspended by a conductor.");
-        return;
-      }
 
       const isPassX = typeof qrString === 'string' && (qrString.includes('###') || qrString.includes('PX-'));
       if (!isPassX) {
@@ -1675,19 +1683,38 @@
         return;
       }
 
-      // Anti-Passback / Duplicate Scan Prevention Rule
-      const todayStr = new Date().toISOString().split('T')[0];
-      const routeKey = p ? `${p.id}_${todayStr}` : `PX_DEFAULT_${todayStr}`;
-      const scanLogs = getScanLogs();
+      // Extract Pass ID from QR string (format: PX-123456###Name###...)
+      const parts = qrString.split('###');
+      const passId = parts[0];
 
-      if (scanLogs[routeKey]) {
+      const passes = getDB();
+      const scannedPass = passes.find(p => p.id === passId);
+
+      if (!scannedPass) {
         if (audioFailure) audioFailure.play().catch(()=>{});
-        showGPayBanner(false, "FRAUD: SECOND SCAN DETECTED", "Pass already scanned & accepted on this route today! Duplicate entry blocked.");
+        showGPayBanner(false, "PASS NOT FOUND", "This pass ID does not exist in local authority registry.");
         return;
       }
 
-      // Mark as scanned for today on this route
-      scanLogs[routeKey] = true;
+      if (scannedPass.status === 'RESTRAINED' || scannnedPass.status === 'BLACKLISTED' || scannedPass.status === 'REJECTED') {
+        if (audioFailure) audioFailure.play().catch(()=>{});
+        showGPayBanner(false, "PASS SUSPENDED", "This pass has been restrained, blacklisted, or cancelled.");
+        return;
+      }
+
+      // Anti-Passback / Duplicate Scan Prevention (Once per route per day)
+      const todayStr = new Date().toISOString().split('T')[0];
+      const scanKey = `${scannedPass.id}_${todayStr}`;
+      const scanLogs = getScanLogs();
+
+      if (scanLogs[scanKey]) {
+        if (audioFailure) audioFailure.play().catch(()=>{});
+        showGPayBanner(false, "FRAUD: SECOND SCAN DETECTED", "ALREADY SCANNED TODAY! This pass has already been accepted on this route for this trip.");
+        return;
+      }
+
+      // Record scan log
+      scanLogs[scanKey] = true;
       saveScanLogs(scanLogs);
 
       if (audioSuccess) audioSuccess.play().catch(()=>{});
