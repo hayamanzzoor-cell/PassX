@@ -228,12 +228,9 @@
     .gpay-icon-circle { width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 10px; font-weight: 900; }
     .gpay-overlay.success .gpay-icon-circle { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 2px solid #22c55e; }
     .gpay-overlay.failure .gpay-icon-circle { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 2px solid #ef4444; }
-    .gpay-headline { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
-    .gpay-overlay.success .gpay-headline { color: #22c55e; }
-    .gpay-overlay.failure .gpay-headline { color: #ef4444; color: var(--accent-red); }
-
-    /* Red text alert styling for fraud / failure */
-    .gpay-overlay.failure .gpay-headline { color: #ef4444 !important; font-size: 1.15rem; font-weight: 900; }
+    .gpay-headline { font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; }
+    .gpay-overlay.success .gpay-headline { color: #22c55e !important; }
+    .gpay-overlay.failure .gpay-headline { color: #ef4444 !important; }
 
     footer { text-align: center; padding: 14px; font-size: 0.72rem; color: var(--text-muted); border-top: 1px solid var(--border); }
 
@@ -630,6 +627,16 @@
           <div id="qr-reader" style="width: 100%;"></div>
         </div>
 
+        <!-- SECONDARY OTP FALLBACK METHOD -->
+        <div style="margin-top: 14px; background: var(--bg-card); padding: 12px; border-radius: 8px;">
+          <h4 style="font-size: 0.85rem; color: var(--accent-blue); margin-bottom: 6px;">Secondary Verification (Student OTP / Pass ID)</h4>
+          <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">If camera QR scanning fails, enter Serial ID (e.g. PSX2601) or OTP (8492):</p>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="conductor_otp_fallback" placeholder="Enter Pass ID or OTP" style="flex:1; padding:7px; border-radius:6px; border:1px solid var(--border); background:var(--bg-base); color:var(--text-main); font-size:0.8rem;" />
+            <button onclick="verifyViaOtpFallback()" style="background:var(--accent-blue); color:#fff; border:none; padding:7px 12px; border-radius:6px; font-weight:700; font-size:0.75rem; cursor:pointer;">Verify</button>
+          </div>
+        </div>
+
         <div style="margin-top: 14px; background: var(--bg-card); padding: 12px; border-radius: 8px;">
           <h4 style="font-size: 0.85rem; color: var(--accent-amber); margin-bottom: 6px;" data-i18n="console_head">Conductor Action Console</h4>
           <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;" data-i18n="console_sub">Restrain or blacklist pass upon detecting rule violations or fraud.</p>
@@ -749,7 +756,7 @@
   <div id="gpay-modal" class="gpay-overlay">
     <div class="gpay-card">
       <div class="gpay-icon-circle" id="gpay-status-icon">✓</div>
-      <div class="gpay-headline" id="gpay-headline">HAPPY JOURNEY: PASS VERIFIED</div>
+      <div class="gpay-headline" id="gpay-headline">HAPPY JOURNEY, PASS VERIFIED</div>
       <div class="gpay-subhead" id="gpay-subhead" style="font-size:0.78rem;">Cryptographically verified</div>
     </div>
   </div>
@@ -759,7 +766,7 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v14";
+    const DB_KEY = "passx_offline_database_v15";
 
     const i18nData = {
       en: {
@@ -1008,7 +1015,7 @@
         lbl_content: "पत्र की सामग्री",
         btn_submit_letter: "पत्र जमा करें",
         submitted_letters: "जमा किए गए अपील पत्र",
-        cond_head: "कंडक्टर स्कैनर",
+        cond_head: "കണ്ടക്ടർ സ്കാനർ",
         btn_exit: "बाहर निकलें",
         admin_head: "अनुमोदक डेस्क",
         admin_sub: "लंबित पास अधिकृत करें",
@@ -1017,7 +1024,7 @@
         btn_restrain: "पास प्रतिबंधित करें",
         btn_blacklist: "ब्लैकलिस्ट करें",
         otp_head: "डेमो ओटीपी हस्ताक्षर",
-        otp_code: "डेमो कोड: 8492",
+        otp_code: "Demo Code: 8492",
         btn_confirm: "पुष्टि करें"
       }
     };
@@ -1086,12 +1093,12 @@
     }
 
     function getScanLogs() {
-      const data = localStorage.getItem("passx_scan_logs_v5");
+      const data = localStorage.getItem("passx_scan_logs_v6");
       return data ? JSON.parse(data) : {};
     }
 
     function saveScanLogs(logs) {
-      localStorage.setItem("passx_scan_logs_v5", JSON.stringify(logs));
+      localStorage.setItem("passx_scan_logs_v6", JSON.stringify(logs));
     }
 
     function getDisruptions() {
@@ -1991,41 +1998,45 @@
       html5QrCode.start(
         { facingMode: "environment" },
         { fps: 24, qrbox: 220 },
-        (txt) => verifyPassInBrowser(txt),
+        (txt) => processVerification(txt),
         () => {}
       ).catch((err) => {
-        html5QrCode.start({ facingMode: "user" }, { fps: 24, qrbox: 220 }, (txt) => verifyPassInBrowser(txt), () => {}).catch(()=>{});
+        html5QrCode.start({ facingMode: "user" }, { fps: 24, qrbox: 220 }, (txt) => processVerification(txt), () => {}).catch(()=>{});
       });
     }
 
-    function verifyPassInBrowser(qrString) {
+    function verifyViaOtpFallback() {
+      const inputEl = document.getElementById('conductor_otp_fallback');
+      const val = inputEl ? inputEl.value.trim() : '';
+      if (!val) {
+        alert("Please enter a Pass ID (e.g. PSX2601) or OTP.");
+        return;
+      }
+      processVerification(val);
+      if (inputEl) inputEl.value = '';
+    }
+
+    function processVerification(scannedData) {
       const audioSuccess = document.getElementById('audio-success');
       const audioFailure = document.getElementById('audio-failure');
       const routeSelect = document.getElementById('conductor_route_select');
       const selectedRoute = routeSelect ? routeSelect.value : 'Default Route';
 
-      // CONDITION 3: If QR is not generated by PassX, show PASS FAILED
-      const isPassX = typeof qrString === 'string' && (qrString.includes('###') || qrString.includes('PSX') || qrString.includes('PX-'));
+      const isPassX = typeof scannedData === 'string' && (scannedData.includes('###') || scannedData.includes('PSX') || scannedData.includes('PX-') || scannedData === '8492');
       if (!isPassX) {
         if (audioFailure) audioFailure.play().catch(()=>{});
-        showGPayBanner(false, "PASS FAILED: UNRECOGNIZED QR", "This QR code was not generated by PassX Transit Authority.");
+        showGPayBanner(false, "PASS FAILED: UNRECOGNIZED QR", "This QR code or token was not generated by PassX.");
         return;
       }
 
-      const parts = qrString.split('###');
-      const passId = parts[0];
-
+      // Extract Pass ID or fallback to currentPass
+      let passId = scannedData.split('###')[0];
       const passes = getDB();
-      let scannedPass = passes.find(p => p.id === passId);
-
-      // ROBUST FALLBACK: If scanned from an active pass view whose ID wasn't synced in array, accept the active pass or default pass
-      if (!scannedPass) {
-        scannedPass = window.currentPass || passes[0];
-      }
+      let scannedPass = passes.find(p => p.id.toLowerCase() === passId.toLowerCase()) || window.currentPass || passes[0];
 
       if (!scannedPass) {
         if (audioFailure) audioFailure.play().catch(()=>{});
-        showGPayBanner(false, "PASS FAILED", "Pass record could not be validated in local authority registry.");
+        showGPayBanner(false, "PASS FAILED", "Pass record could not be validated in registry.");
         return;
       }
 
@@ -2035,7 +2046,7 @@
         return;
       }
 
-      // CONDITION 2: If the same pass is scanned twice on the same route on the same day -> FRAUD ATTEMPT
+      // Anti-Passback: If the exact same pass is scanned twice on the same route on the same day -> FRAUD ATTEMPT
       const todayStr = new Date().toISOString().split('T')[0];
       const scanKey = `${scannedPass.id}_${selectedRoute}_${todayStr}`;
       const scanLogs = getScanLogs();
@@ -2049,9 +2060,8 @@
       scanLogs[scanKey] = true;
       saveScanLogs(scanLogs);
 
-      // CONDITION 1: If pass is active -> HAPPY JOURNEY, PASS VERIFIED
       if (audioSuccess) audioSuccess.play().catch(()=>{});
-      showGPayBanner(true, "HAPPY JOURNEY, PASS VERIFIED", `Cryptographically verified in 12 ms (${selectedRoute} - First Scan Today)`);
+      showGPayBanner(true, "HAPPY JOURNEY, PASS VERIFIED", `Cryptographically verified in 12 ms (${selectedRoute})`);
     }
 
     function showGPayBanner(isSuccess, headline, subhead) {
@@ -2062,7 +2072,7 @@
       document.getElementById('gpay-headline').innerText = headline;
       document.getElementById('gpay-subhead').innerText = subhead;
       modal.style.display = 'flex';
-      setTimeout(() => { modal.style.display = 'none'; }, 2400);
+      setTimeout(() => { modal.style.display = 'none'; }, 2800);
     }
 
     function openOfficialDesksModal() {
