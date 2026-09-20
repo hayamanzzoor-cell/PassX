@@ -766,7 +766,7 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v21";
+    const DB_KEY = "passx_offline_database_v22";
 
     const i18nData = {
       en: {
@@ -1002,7 +1002,7 @@
         cal_sub: "सुबह (AM), दोपहर (NOON), शाम (PM)",
         cal_comp: "अनुपालन: 82%",
         leg_scanned: "स्कैन किया गया",
-        leg_unscanned: "അस्कैनित / छूटा हुआ",
+        leg_unscanned: "अस्कैनित / छूटा हुआ",
         leg_delayed: "विलंबित / बाधित",
         leg_holiday: "छुट्टी",
         dis_head: "स्वतः-जारी पारगमन बाधा और बहाना प्रमाण पत्र",
@@ -1018,11 +1018,11 @@
         cond_head: "കണ്ടക്ടർ സ്കാനർ",
         btn_exit: "പുറത്തുകടക്കുക",
         admin_head: "अनुमोदक डेस्क",
-        admin_sub: "लंबित पास अधिकृत करें",
+        admin_sub: "പാസുകളും അപ്പീലുകളും പരിശോധിക്കുക",
         console_head: "കണ്ടക്ടർ കൺസോൾ",
-        console_sub: "नियम उल्लंघन पर पास प्रतिबंधित करें।",
-        btn_restrain: "पास प्रतिबंधित करें",
-        btn_blacklist: "ब्लैकलिस्ट करें",
+        console_sub: "പാസ് തടഞ്ഞുവെക്കുകയോ ബ്ലാക്ക്ലിസ്റ്റ് ചെയ്യുകയോ ചെയ്യാം.",
+        btn_restrain: "പാസ് തടയുക",
+        btn_blacklist: "ബ്ലാക്ക്ലിസ്റ്റ് ചെയ്യുക",
         otp_head: "ഡെമോ ഒടിപി സൈനിങ്",
         otp_code: "ഡെമോ കോഡ്: 8492",
         btn_confirm: "സ്ഥിരീകരിക്കുക"
@@ -1093,12 +1093,12 @@
     }
 
     function getScanLogs() {
-      const data = localStorage.getItem("passx_scan_logs_v21");
+      const data = localStorage.getItem("passx_scan_logs_v22");
       return data ? JSON.parse(data) : {};
     }
 
     function saveScanLogs(logs) {
-      localStorage.setItem("passx_scan_logs_v21", JSON.stringify(logs));
+      localStorage.setItem("passx_scan_logs_v22", JSON.stringify(logs));
     }
 
     function getDisruptions() {
@@ -1549,7 +1549,8 @@
           const photoInput = document.getElementById('reg_photo_file');
           
           const processNewPassWithPhoto = (photoBase64) => {
-            const passes = getDB();
+            const existingJson = localStorage.getItem(DB_KEY);
+            let passes = existingJson ? JSON.parse(existingJson) : getDB();
             const seqNum = String(passes.length + 1).padStart(2, '0');
             const passId = `PSX26${seqNum}`;
 
@@ -2065,14 +2066,14 @@
         return;
       }
 
-      // Anti-Passback: If scanned twice within 15 minutes on the same route -> FRAUD ATTEMPT
+      // FIX: Use `null` check so first scans never trigger false-positive anti-passback alerts
       const nowTime = Date.now();
       const scanKey = `${scannedPass.id}_${selectedRoute}`;
       const scanLogs = getScanLogs();
-      const lastScanTime = scanLogs[scanKey] || 0;
+      const lastScanTime = scanLogs[scanKey] !== undefined ? scanLogs[scanKey] : null;
       const fifteenMinutesMs = 15 * 60 * 1000;
 
-      if (lastScanTime && (nowTime - lastScanTime < fifteenMinutesMs)) {
+      if (lastScanTime !== null && (nowTime - lastScanTime) < fifteenMinutesMs) {
         if (audioFailure) audioFailure.play().catch(()=>{});
         showGPayBanner(false, "FRAUD ATTEMPT: SECOND SCAN WITHIN 15 MINUTES", `Duplicate scan detected on route: ${selectedRoute} within 15 min window!`);
         return;
@@ -2119,6 +2120,13 @@
         alert("Invalid PIN.");
       }
     }
+
+    // Expose all necessary functions globally for buttons and handlers
+    window.switchAdminTab = switchAdminTab;
+    window.filterAdminList = filterAdminList;
+    window.approveStudentPass = approveStudentPass;
+    window.rejectStudentPassPrompt = rejectStudentPassPrompt;
+    window.loadAdminApplications = loadAdminApplications;
   </script>
 </body>
 </html>
