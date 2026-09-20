@@ -335,7 +335,7 @@
             <div class="smart-card-header">
               <div>
                 <h3 style="color: var(--accent-blue); font-size: 1.05rem;" data-i18n="card_title">PassX Student Smart Pass</h3>
-                <span style="font-size: 0.7rem; color: #94a3b8;">Pass ID: <strong id="card-pass-id">PX-146224</strong></span>
+                <span style="font-size: 0.7rem; color: #94a3b8;">Serial ID: <strong id="card-pass-id">PSX2601</strong></span>
               </div>
               <span id="card-status-badge" class="badge-approved">APPROVED (179 DAYS)</span>
             </div>
@@ -460,7 +460,7 @@
               <h2 id="vault-full-name" style="font-size: 1.2rem; font-weight: 800; color: var(--accent-blue);">Haya Manzoor</h2>
               <div>Reg ID: <strong id="vault-reg-id">JU-BCA-2026-081</strong></div>
               <div>Gender: <strong id="vault-gender">Female</strong></div>
-              <div>Pass ID: <strong id="vault-pass-id">PX-146224</strong></div>
+              <div>Serial ID: <strong id="vault-pass-id">PSX2601</strong></div>
               <div>Status: <span id="vault-status" style="color: var(--accent-green); font-weight: 700;">APPROVED</span></div>
             </div>
           </div>
@@ -491,7 +491,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
           <div>
             <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="app_head">New Transit Concession Application</h3>
-            <p style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="app_sub">Generates institutional enrollment proof automatically</p>
+            <p style="font-size: 0.76rem; color: var(--text-muted);">Generates institutional enrollment proof automatically</p>
           </div>
           <div style="display:flex; gap: 6px;">
             <button type="button" class="btn-pill" onclick="autoFillJainDemo()" data-i18n="btn_autofill">Auto-Fill</button>
@@ -609,12 +609,24 @@
     <div id="view-conductor" style="display: none; max-width: 500px; margin: 0 auto;">
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="cond_head">Conductor Scanner (Back Camera)</h3>
+          <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="cond_head">Conductor Scanner &amp; Route Selector</h3>
           <button class="btn-pill" onclick="showLandingPage()" data-i18n="btn_exit">Exit</button>
         </div>
+
+        <div style="margin-bottom: 12px;" class="form-group">
+          <label style="font-size:0.75rem; font-weight:700; color:var(--accent-blue); margin-bottom:4px;">Select Bus / Metro Route for Scanning:</label>
+          <select id="conductor_route_select" class="select-pill" style="width:100%; padding:8px; border-radius:8px;">
+            <option value="Bus: Ernakulam North -> Infopark">Bus: Ernakulam North -> Infopark</option>
+            <option value="Bus: Aluva -> Vyttila Hub">Bus: Aluva -> Vyttila Hub</option>
+            <option value="Metro: Kaloor -> Edappally">Metro: Kaloor -> Edappally</option>
+            <option value="Metro: Aluva -> MG Road">Metro: Aluva -> MG Road</option>
+          </select>
+        </div>
+
         <div style="background: #000; border: 2px solid var(--accent-blue); border-radius: 10px; overflow: hidden; min-height: 240px; display: flex; align-items: center; justify-content: center;">
           <div id="qr-reader" style="width: 100%;"></div>
         </div>
+
         <div style="margin-top: 14px; background: var(--bg-card); padding: 12px; border-radius: 8px;">
           <h4 style="font-size: 0.85rem; color: var(--accent-amber); margin-bottom: 6px;" data-i18n="console_head">Conductor Action Console</h4>
           <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;" data-i18n="console_sub">Restrain or blacklist pass upon detecting rule violations or fraud.</p>
@@ -650,7 +662,7 @@
       </div>
 
       <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 16px; font-size: 0.85rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 8px;">
-        <div>Reference ID: <strong id="a4-app-id">PX-0000</strong> | Date: <strong id="a4-date">2026-09-01</strong></div>
+        <div>Serial No: <strong id="a4-app-id">PSX2601</strong> | Date: <strong id="a4-date">2026-09-01</strong></div>
         <img id="a4-student-photo" src="" alt="Student Selfie" style="width: 50px; height: 60px; object-fit: cover; border: 1px solid #0f172a; border-radius: 4px;" />
       </div>
 
@@ -744,13 +756,13 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v11";
+    const DB_KEY = "passx_offline_database_v12";
 
     const i18nData = {
       en: {
         sub_brand: "Universal Student Transit Desk",
         nav_home: "Home",
-        nav_theme: "Theme (Day/Night)",
+        nav_theme: "Theme",
         nav_desks: "Staff Desks",
         hero_badge: "OFFLINE CRYPTOGRAPHIC TRANSIT AUTHORITY",
         hero_title: "Zero-Latency Digital Concessions for <span>All Students</span>",
@@ -821,7 +833,7 @@
         lbl_content: "Formal A4 Letter Content",
         btn_submit_letter: "Submit Letter to Approver Desk",
         submitted_letters: "Submitted Appeal Letters",
-        cond_head: "Conductor Scanner (Back Camera)",
+        cond_head: "Conductor Scanner & Route Selector",
         btn_exit: "Exit",
         admin_head: "Approver Desk",
         admin_sub: "Authorize pending passes & review student appeal letters",
@@ -836,7 +848,7 @@
       ml: {
         sub_brand: "യൂണിവേഴ്സൽ സ്റ്റുഡൻ്റ് ട്രാൻസിറ്റ് ഡെസ്ക്",
         nav_home: "ഹോം",
-        nav_theme: "തീം (പകൽ/രാത്രി)",
+        nav_theme: "തീം",
         nav_desks: "ജീവനക്കാരുടെ ഡെസ്ക്",
         hero_badge: "ഓഫ്‌ലൈൻ ക്രിപ്റ്റോഗ്രാഫിക് ട്രാൻസിറ്റ് അതോറിറ്റി",
         hero_title: "എല്ലാ വിദ്യാർത്ഥികൾക്കുമുള്ള ഡിജിറ്റൽ യാത്രാക്കൂലി ഇളവുകൾ",
@@ -922,7 +934,7 @@
       hi: {
         sub_brand: "यूनिवर्सल स्टूडेंट ट्रांजिट डेस्क",
         nav_home: "होम",
-        nav_theme: "थीम (दिन/रात)",
+        nav_theme: "थीम",
         nav_desks: "स्टाफ डेस्क",
         hero_badge: "ऑफ़लाइन क्रिप्टोग्राफिक ट्रांजिट अथॉरिटी",
         hero_title: "सभी छात्रों के लिए शून्य-विलंबता डिजिटल रियायतें",
@@ -1001,7 +1013,7 @@
         console_sub: "नियम उल्लंघन पर पास प्रतिबंधित करें।",
         btn_restrain: "पास प्रतिबंधित करें",
         btn_blacklist: "ब्लैकलिस्ट करें",
-        otp_head: "डेमो ओटीपी हस्ताक्षर",
+        otp_head: "डेमो ओटीപി हस्ताक्षर",
         otp_code: "डेमो कोड: 8492",
         btn_confirm: "पुष्टि करें"
       }
@@ -1029,7 +1041,7 @@
       const data = localStorage.getItem(DB_KEY);
       if (!data) {
         const defaultPass = {
-          id: "PX-146224",
+          id: "PSX2601",
           name: "Haya Manzoor",
           student_id: "JU-BCA-2026-081",
           gender: "Female",
@@ -1071,12 +1083,12 @@
     }
 
     function getScanLogs() {
-      const data = localStorage.getItem("passx_scan_logs_v2");
+      const data = localStorage.getItem("passx_scan_logs_v3");
       return data ? JSON.parse(data) : {};
     }
 
     function saveScanLogs(logs) {
-      localStorage.setItem("passx_scan_logs_v2", JSON.stringify(logs));
+      localStorage.setItem("passx_scan_logs_v3", JSON.stringify(logs));
     }
 
     function getDisruptions() {
@@ -1127,7 +1139,7 @@
       `);
     }
 
-    function fetchActiveStudentPass(passId = "PX-146224") {
+    function fetchActiveStudentPass(passId = "PSX2601") {
       const passes = getDB();
       const savedId = localStorage.getItem('passx_active_id') || passId;
       let found = passes.find(p => p.id === savedId) || passes[0];
@@ -1509,7 +1521,11 @@
           const photoInput = document.getElementById('reg_photo_file');
           
           const processNewPassWithPhoto = (photoBase64) => {
-            const passId = 'PX-' + Math.floor(100000 + Math.random() * 900000);
+            // Generate Serial Number series format: PSX + Year (26) + Sequential Count
+            const passes = getDB();
+            const seqNum = String(passes.length + 1).padStart(2, '0');
+            const passId = `PSX26${seqNum}`;
+
             const newPass = {
               id: passId,
               name: getVal('reg_name'),
@@ -1542,13 +1558,12 @@
               signature: ''
             };
 
-            const passes = getDB();
             passes.push(newPass);
             saveDB(passes);
 
             window.currentPass = newPass;
             localStorage.setItem('passx_active_id', passId);
-            alert("Application submitted successfully! Status: PENDING. Accessing your student portal.");
+            alert(`Application submitted successfully! Serial ID: ${passId}. Status: PENDING.`);
             launchExistingUserPortal();
           };
 
@@ -1576,31 +1591,57 @@
       loadAdminApplications();
     }
 
+    function filterAdminList() {
+      loadAdminApplications();
+    }
+
     function loadAdminApplications() {
       const passes = getDB();
       const appeals = getAppeals();
+      const searchInput = document.getElementById('admin_search_input');
+      const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
       
       let list = [];
       if (currentAdminTab === 'APPEALS') {
         list = appeals;
+      } else if (currentAdminTab === 'REJECTED') {
+        list = passes.filter(p => p.status === 'REJECTED');
+      } else if (currentAdminTab === 'RESTRAINED') {
+        list = passes.filter(p => p.status === 'RESTRAINED' || p.status === 'BLACKLISTED');
+      } else if (currentAdminTab === 'APPROVED') {
+        list = passes.filter(p => p.status === 'APPROVED');
       } else {
-        list = passes.filter(p => p.status === currentAdminTab || (currentAdminTab === 'RESTRAINED' && (p.status === 'RESTRAINED' || p.status === 'BLACKLISTED')));
+        list = passes.filter(p => p.status === 'PENDING');
+      }
+
+      // Filter by search query (Serial ID / Name / Reg ID)
+      if (query) {
+        list = list.filter(item => {
+          const id = (item.id || item.pass_id || '').toLowerCase();
+          const name = (item.name || '').toLowerCase();
+          const studentId = (item.student_id || '').toLowerCase();
+          return id.includes(query) || name.includes(query) || studentId.includes(query);
+        });
       }
 
       const box = document.getElementById('pending-applications-list');
       if (!box) return;
       
       let tabsHtml = `
-        <div style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+        <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
           <button onclick="switchAdminTab('PENDING')" class="btn-pill" style="background:${currentAdminTab==='PENDING'?'#0284c7':'var(--bg-card)'}">Pending Passes</button>
           <button onclick="switchAdminTab('APPROVED')" class="btn-pill" style="background:${currentAdminTab==='APPROVED'?'#0284c7':'var(--bg-card)'}">Approved</button>
+          <button onclick="switchAdminTab('REJECTED')" class="btn-pill" style="background:${currentAdminTab==='REJECTED'?'#0284c7':'var(--bg-card)'}">Rejected Passes</button>
           <button onclick="switchAdminTab('RESTRAINED')" class="btn-pill" style="background:${currentAdminTab==='RESTRAINED'?'#0284c7':'var(--bg-card)'}">Restrained / Flagged</button>
           <button onclick="switchAdminTab('APPEALS')" class="btn-pill" style="background:${currentAdminTab==='APPEALS'?'#0284c7':'var(--bg-card)'}">Appeal Letters (${appeals.length})</button>
+        </div>
+        <div style="margin-bottom: 14px;">
+          <input type="text" id="admin_search_input" oninput="filterAdminList()" placeholder="Search by Serial No (e.g. PSX2601) or Name..." value="${query}" style="width:100%; padding:9px 12px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; color:var(--text-main); font-size:0.85rem;" />
         </div>
       `;
 
       if (!list || list.length === 0) {
-        box.innerHTML = tabsHtml + `<div style="text-align: center; color: var(--text-muted); padding: 24px;">No records found in this view.</div>`;
+        box.innerHTML = tabsHtml + `<div style="text-align: center; color: var(--text-muted); padding: 24px;">No records found matching your search.</div>`;
         return;
       }
 
@@ -1626,11 +1667,12 @@
         return `
           <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <div>
-              <div style="font-size: 1rem; font-weight: 800; color: var(--accent-blue);">${item.name} (${item.student_id}) [ID: ${item.id}]</div>
+              <div style="font-size: 1rem; font-weight: 800; color: var(--accent-blue);">${item.name} (${item.student_id}) [Serial ID: ${item.id}]</div>
               <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
                 Route: <strong>${item.bus_pickup || 'Ernakulam'} -> ${item.bus_drop || 'Infopark'}</strong> | Status: <strong style="color:${item.status==='APPROVED'?'#4ade80':'#f59e0b'}">${item.status}</strong>
               </div>
               ${item.restraint_info ? `<div style="font-size: 0.75rem; color: var(--accent-amber); margin-top: 2px;">Restraint: ${item.restraint_info}</div>` : ''}
+              ${item.rejection_reason ? `<div style="font-size: 0.75rem; color: var(--accent-red); margin-top: 2px;">Reason: ${item.rejection_reason}</div>` : ''}
             </div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap;">
               <button onclick="openA4Modal('${item.id}')" style="background: #0284c7; color: #fff; font-weight: 700; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.75rem;">
@@ -1882,7 +1924,7 @@
 
       doc.setTextColor(148, 163, 184);
       doc.setFontSize(9);
-      doc.text(`Pass ID: ${pass.id}`, 30, 56);
+      doc.text(`Serial ID: ${pass.id}`, 30, 56);
       doc.text(`Status: APPROVED & ECDSA VERIFIED`, 125, 56);
 
       doc.setFillColor(9, 13, 22);
@@ -1958,8 +2000,10 @@
     function verifyPassInBrowser(qrString) {
       const audioSuccess = document.getElementById('audio-success');
       const audioFailure = document.getElementById('audio-failure');
+      const routeSelect = document.getElementById('conductor_route_select');
+      const selectedRoute = routeSelect ? routeSelect.value : 'Default Route';
 
-      const isPassX = typeof qrString === 'string' && (qrString.includes('###') || qrString.includes('PX-'));
+      const isPassX = typeof qrString === 'string' && (qrString.includes('###') || qrString.includes('PSX'));
       if (!isPassX) {
         if (audioFailure) audioFailure.play().catch(()=>{});
         showGPayBanner(false, "INVALID QR CODE", "Tampered or unregistered transit token detected.");
@@ -1984,13 +2028,14 @@
         return;
       }
 
+      // Anti-Passback Rule: Same pass scanned more than once in the same route on the same day
       const todayStr = new Date().toISOString().split('T')[0];
-      const scanKey = `${scannedPass.id}_${todayStr}`;
+      const scanKey = `${scannedPass.id}_${selectedRoute}_${todayStr}`;
       const scanLogs = getScanLogs();
 
       if (scanLogs[scanKey]) {
         if (audioFailure) audioFailure.play().catch(()=>{});
-        showGPayBanner(false, "FRAUD: SECOND SCAN DETECTED", "ALREADY SCANNED TODAY! This pass has already been accepted on this route for this trip.");
+        showGPayBanner(false, "FRAUD: SECOND SCAN DETECTED", `ALREADY SCANNED TODAY ON ROUTE: ${selectedRoute}! Duplicate pass usage blocked.`);
         return;
       }
 
@@ -1998,7 +2043,7 @@
       saveScanLogs(scanLogs);
 
       if (audioSuccess) audioSuccess.play().catch(()=>{});
-      showGPayBanner(true, "ACCEPTED: VALID PASS", "Cryptographically verified in 12 ms (First Scan Today)");
+      showGPayBanner(true, "ACCEPTED: VALID PASS", `Verified in 12 ms (${selectedRoute} - First Scan Today)`);
     }
 
     function showGPayBanner(isSuccess, headline, subhead) {
