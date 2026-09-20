@@ -228,7 +228,7 @@
     .gpay-icon-circle { width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 10px; font-weight: 900; }
     .gpay-overlay.success .gpay-icon-circle { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 2px solid #22c55e; }
     .gpay-overlay.failure .gpay-icon-circle { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 2px solid #ef4444; }
-    .gpay-headline { font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; }
+    .gpay-headline { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; }
     .gpay-overlay.success .gpay-headline { color: #22c55e !important; }
     .gpay-overlay.failure .gpay-headline { color: #ef4444 !important; }
 
@@ -478,7 +478,7 @@
             <div><strong>Bus Corridor:</strong> <span id="vault-bus">Ernakulam North -> Infopark</span></div>
           </div>
 
-          <button type="button" class="btn-danger" style="margin-top: 16px;" onclick="deleteCurrentPass()" data-i18n="btn_delete_pass">
+          <button type="button" class="btn-danger" style="margin-top: 16px;" onclick="deleteCurrentPass()">
             Delete / Revoke Pass
           </button>
         </div>
@@ -629,10 +629,10 @@
 
         <!-- SECONDARY OTP FALLBACK METHOD -->
         <div style="margin-top: 14px; background: var(--bg-card); padding: 12px; border-radius: 8px;">
-          <h4 style="font-size: 0.85rem; color: var(--accent-blue); margin-bottom: 6px;">Secondary Verification (Student OTP / Pass ID)</h4>
+          <h4 style="font-size: 0.85rem; color: var(--accent-blue); margin-bottom: 6px;">Secondary Verification (Student OTP / Serial ID)</h4>
           <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 8px;">If camera QR scanning fails, enter Serial ID (e.g. PSX2601) or OTP (8492):</p>
           <div style="display: flex; gap: 6px;">
-            <input type="text" id="conductor_otp_fallback" placeholder="Enter Pass ID or OTP" style="flex:1; padding:7px; border-radius:6px; border:1px solid var(--border); background:var(--bg-base); color:var(--text-main); font-size:0.8rem;" />
+            <input type="text" id="conductor_otp_fallback" placeholder="Enter Serial ID or OTP" style="flex:1; padding:7px; border-radius:6px; border:1px solid var(--border); background:var(--bg-base); color:var(--text-main); font-size:0.8rem;" />
             <button onclick="verifyViaOtpFallback()" style="background:var(--accent-blue); color:#fff; border:none; padding:7px 12px; border-radius:6px; font-weight:700; font-size:0.75rem; cursor:pointer;">Verify</button>
           </div>
         </div>
@@ -766,7 +766,7 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v15";
+    const DB_KEY = "passx_offline_database_v16";
 
     const i18nData = {
       en: {
@@ -1016,7 +1016,7 @@
         btn_submit_letter: "पत्र जमा करें",
         submitted_letters: "जमा किए गए अपील पत्र",
         cond_head: "കണ്ടക്ടർ സ്കാനർ",
-        btn_exit: "बाहर निकलें",
+        btn_exit: "പുറത്തുകടക്കുക",
         admin_head: "अनुमोदक डेस्क",
         admin_sub: "लंबित पास अधिकृत करें",
         console_head: "कंडक्टर कंसोल",
@@ -1093,12 +1093,12 @@
     }
 
     function getScanLogs() {
-      const data = localStorage.getItem("passx_scan_logs_v6");
+      const data = localStorage.getItem("passx_scan_logs_v7");
       return data ? JSON.parse(data) : {};
     }
 
     function saveScanLogs(logs) {
-      localStorage.setItem("passx_scan_logs_v6", JSON.stringify(logs));
+      localStorage.setItem("passx_scan_logs_v7", JSON.stringify(logs));
     }
 
     function getDisruptions() {
@@ -1374,6 +1374,24 @@
         imgEl.src = p.photo ? p.photo : fallbackUrl;
         imgEl.onerror = () => { imgEl.src = fallbackUrl; };
       }
+    }
+
+    function deleteCurrentPass() {
+      const p = window.currentPass;
+      if (!p) {
+        alert("No active pass found to delete.");
+        return;
+      }
+      if (!confirm(`Are you sure you want to delete and revoke pass ${p.id}?`)) return;
+
+      let passes = getDB();
+      passes = passes.filter(x => x.id !== p.id);
+      saveDB(passes);
+
+      localStorage.removeItem('passx_active_id');
+      window.currentPass = null;
+      alert("Pass successfully deleted and revoked.");
+      showLandingPage();
     }
 
     function renderAttendanceCalendar() {
@@ -2009,7 +2027,7 @@
       const inputEl = document.getElementById('conductor_otp_fallback');
       const val = inputEl ? inputEl.value.trim() : '';
       if (!val) {
-        alert("Please enter a Pass ID (e.g. PSX2601) or OTP.");
+        alert("Please enter a Serial ID (e.g. PSX2601) or OTP.");
         return;
       }
       processVerification(val);
@@ -2022,6 +2040,7 @@
       const routeSelect = document.getElementById('conductor_route_select');
       const selectedRoute = routeSelect ? routeSelect.value : 'Default Route';
 
+      // Rule: If QR is not generated by PassX (i.e. random string or external QR without PassX indicators) -> PASS FAILED
       const isPassX = typeof scannedData === 'string' && (scannedData.includes('###') || scannedData.includes('PSX') || scannedData.includes('PX-') || scannedData === '8492');
       if (!isPassX) {
         if (audioFailure) audioFailure.play().catch(()=>{});
@@ -2029,8 +2048,8 @@
         return;
       }
 
-      // Extract Pass ID or fallback to currentPass
-      let passId = scannedData.split('###')[0];
+      // Extract Pass ID
+      let passId = scannedData.split('###')[0].trim();
       const passes = getDB();
       let scannedPass = passes.find(p => p.id.toLowerCase() === passId.toLowerCase()) || window.currentPass || passes[0];
 
@@ -2046,22 +2065,26 @@
         return;
       }
 
-      // Anti-Passback: If the exact same pass is scanned twice on the same route on the same day -> FRAUD ATTEMPT
-      const todayStr = new Date().toISOString().split('T')[0];
-      const scanKey = `${scannedPass.id}_${selectedRoute}_${todayStr}`;
+      // Rule: If the same pass is scanned for the second time within 15 minutes on the same route -> FRAUD ATTEMPT
+      const nowTime = Date.now();
+      const scanKey = `${scannedPass.id}_${selectedRoute}`;
       const scanLogs = getScanLogs();
+      const lastScanTime = scanLogs[scanKey] || 0;
+      const fifteenMinutesMs = 15 * 60 * 1000;
 
-      if (scanLogs[scanKey]) {
+      if (lastScanTime && (nowTime - lastScanTime < fifteenMinutesMs)) {
         if (audioFailure) audioFailure.play().catch(()=>{});
-        showGPayBanner(false, "FRAUD ATTEMPT: SECOND SCAN DETECTED", `Pass already scanned today on route: ${selectedRoute}! Duplicate scan blocked.`);
+        showGPayBanner(false, "FRAUD ATTEMPT: SECOND SCAN WITHIN 15 MINUTES", `Duplicate scan detected on route: ${selectedRoute} within 15 min window!`);
         return;
       }
 
-      scanLogs[scanKey] = true;
+      // Record this scan timestamp
+      scanLogs[scanKey] = nowTime;
       saveScanLogs(scanLogs);
 
+      // Rule: Active Pass -> HAPPY JOURNEY, PASS VERIFIED
       if (audioSuccess) audioSuccess.play().catch(()=>{});
-      showGPayBanner(true, "HAPPY JOURNEY, PASS VERIFIED", `Cryptographically verified in 12 ms (${selectedRoute})`);
+      showGPayBanner(true, "HAPPY JOURNEY, PASS VERIFIED", `Verified in 12 ms (${selectedRoute})`);
     }
 
     function showGPayBanner(isSuccess, headline, subhead) {
