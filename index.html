@@ -93,6 +93,13 @@
 
     .hero-btn-primary { background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; font-weight: 700; padding: 14px 28px; border-radius: 12px; border: none; cursor: pointer; font-size: 0.95rem; box-shadow: 0 10px 20px rgba(2, 132, 199, 0.3); }
 
+    /* Onboarding Gateway Card */
+    .gateway-grid { display: grid; grid-template-columns: 1fr; gap: 14px; max-width: 600px; margin: 20px auto 0 auto; }
+    .gateway-card { background: var(--bg-surface); border: 2px solid var(--border); border-radius: 14px; padding: 20px; text-align: left; cursor: pointer; transition: all 0.2s ease; }
+    .gateway-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); }
+    .gateway-card h3 { color: var(--accent-blue); font-size: 1.1rem; margin-bottom: 6px; }
+    .gateway-card p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+
     .tabs-nav { display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 7px 12px; font-weight: 700; font-size: 0.8rem; border-radius: 8px; cursor: pointer; white-space: nowrap; }
     .tab-btn.active { background: var(--bg-surface); color: var(--accent-blue); border: 1px solid var(--border); }
@@ -204,6 +211,7 @@
       .hero-container { padding: 40px 24px; }
       .hero-title { font-size: 2.2rem; }
       .hero-stats-grid { grid-template-columns: repeat(4, 1fr); }
+      .gateway-grid { grid-template-columns: repeat(2, 1fr); }
       .form-grid { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
       .cal-header-day { font-size: 0.72rem; }
       .cal-day-box { padding: 8px 4px; min-height: 85px; }
@@ -235,7 +243,7 @@
   </header>
 
   <main>
-    <!-- HERO -->
+    <!-- HERO GATEWAY SELECTION -->
     <div id="sec-landing-page">
       <div class="hero-container">
         <div class="hero-badge" data-i18n="hero_badge">OFFLINE CRYPTOGRAPHIC TRANSIT AUTHORITY</div>
@@ -264,19 +272,29 @@
           </div>
         </div>
 
-        <div>
-          <button class="hero-btn-primary" onclick="launchStudentPassDesk()" data-i18n="btn_launch">Access Student Pass Portal</button>
+        <!-- Professional Onboarding Gateway -->
+        <div style="margin-top: 10px;">
+          <h3 style="font-size: 1rem; color: var(--text-main); margin-bottom: 12px;">Select Portal Gateway</h3>
+          <div class="gateway-grid">
+            <div class="gateway-card" onclick="launchExistingUserPortal()">
+              <h3 data-i18n="gw_existing_title">Existing User Portal</h3>
+              <p data-i18n="gw_existing_desc">Access your active PassX smart QR pass, transit attendance logs, and profile vault.</p>
+            </div>
+            <div class="gateway-card" onclick="launchNewApplicantPortal()">
+              <h3 data-i18n="gw_new_title">New Applicant Portal</h3>
+              <p data-i18n="gw_new_desc">Submit your digital transit concession application and generate automated enrollment proof.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- STUDENT DESK WRAPPER -->
+    <!-- EXISTING USER DESK WRAPPER (Smart Pass, Attendance, Disruption, Vault) -->
     <div id="student-desk-wrapper" style="display: none;">
       <div class="tabs-nav">
         <button class="tab-btn active" id="tab-btn-pass" onclick="switchStudentTab('pass-view')" data-i18n="tab_pass">Smart Pass</button>
-        <button class="tab-btn" id="tab-btn-apply" onclick="switchStudentTab('apply-view')" data-i18n="tab_apply">Application</button>
         <button class="tab-btn" id="tab-btn-calendar" onclick="switchStudentTab('calendar-view')" data-i18n="tab_attendance">Attendance</button>
-        <button class="tab-btn" id="tab-btn-excuse" onclick="switchStudentTab('excuse-view')" data-i18n="tab_disruption">Disruption</button>
+        <button class="tab-btn" id="tab-btn-excuse" onclick="switchStudentTab('excuse-view')" data-i18n="tab_disruption">Disruption &amp; Excuses</button>
         <button class="tab-btn" id="tab-btn-profile" onclick="switchStudentTab('profile-view')" data-i18n="tab_vault">Profile Vault</button>
       </div>
 
@@ -330,114 +348,7 @@
         </div>
       </div>
 
-      <!-- 2. Application View -->
-      <div id="sec-apply-view" style="display: none;">
-        <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-            <div>
-              <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="app_head">Transit Concession Application</h3>
-              <p style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="app_sub">Generates institutional enrollment proof automatically</p>
-            </div>
-            <div style="display:flex; gap: 6px;">
-              <button type="button" class="btn-pill" onclick="autoFillJainDemo()" data-i18n="btn_autofill">Auto-Fill</button>
-              <button type="button" class="btn-pill" style="background: #16a34a; color:#fff;" onclick="openWhatsAppOtpModal()" data-i18n="btn_whatsapp">WhatsApp OTP</button>
-            </div>
-          </div>
-
-          <form id="pass-registration-form">
-            <div class="form-grid">
-              <div class="form-group">
-                <label data-i18n="lbl_name">Student Full Name</label>
-                <input type="text" id="reg_name" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_reg">Student Reg / Roll ID</label>
-                <input type="text" id="reg_student_id" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_dob">Date of Birth</label>
-                <input type="date" id="reg_dob" value="2004-05-12" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_age">Age</label>
-                <input type="number" id="reg_age" value="22" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_blood">Blood Group</label>
-                <select id="reg_blood_group">
-                  <option value="O+">O Positive (O+)</option>
-                  <option value="A+">A Positive (A+)</option>
-                  <option value="B+">B Positive (B+)</option>
-                  <option value="AB-">AB Negative (AB-)</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_phone">Student Contact Phone</label>
-                <input type="tel" id="reg_phone" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_guard_name">Guardian Name</label>
-                <input type="text" id="reg_guardian_name" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_guard_rel">Relation with Applicant</label>
-                <input type="text" id="reg_guardian_relation" placeholder="e.g. Father, Mother" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_guard_phone">Guardian Emergency Phone</label>
-                <input type="tel" id="reg_guardian_phone" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_transport">Opted Transport Mode</label>
-                <select id="reg_transport_mode">
-                  <option value="Both">Both Bus and Metro</option>
-                  <option value="Bus">Bus Concession Only</option>
-                  <option value="Metro">Metro Concession Only</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_bus_pickup">Bus Boarding Stop</label>
-                <input type="text" id="reg_bus_pickup" placeholder="e.g. Ernakulam North" />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_bus_drop">Bus Dropping Stop</label>
-                <input type="text" id="reg_bus_drop" placeholder="e.g. Infopark" />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_metro_pickup">Metro Boarding Station</label>
-                <input type="text" id="reg_metro_pickup" placeholder="e.g. Kaloor Metro" />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_metro_drop">Metro Dropping Station</label>
-                <input type="text" id="reg_metro_drop" placeholder="e.g. Edappally Metro" />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_degree">Degree Level (Subsidy Rule)</label>
-                <select id="reg_degree_level">
-                  <option value="UG">UG (100% Free Pass)</option>
-                  <option value="PG">PG (100% Free Pass)</option>
-                  <option value="PhD">PhD (50% Subsidy)</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_home">Home Address</label>
-                <input type="text" id="reg_home_address" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_inst">Institution Campus Address</label>
-                <input type="text" id="reg_institution_address" value="Jain University, Kochi Campus, Infopark" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="lbl_bonafide">Auto-Generated Enrollment Proof</label>
-                <textarea id="reg_bonafide_text" rows="2" readonly style="color: var(--accent-blue); font-size: 0.74rem;"></textarea>
-              </div>
-            </div>
-            <button type="submit" class="btn-submit" data-i18n="btn_submit_app">Submit Application</button>
-          </form>
-        </div>
-      </div>
-
-      <!-- 3. Attendance Calendar View -->
+      <!-- 2. Attendance Calendar View -->
       <div id="sec-calendar-view" style="display: none;">
         <div class="card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -459,54 +370,19 @@
         </div>
       </div>
 
-      <!-- 4. Disruption / Excuse View -->
+      <!-- 3. Disruption & Excuse View (Auto-Generated by Transit Authority) -->
       <div id="sec-excuse-view" style="display: none;">
         <div class="card">
           <div style="margin-bottom: 14px;">
-            <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="dis_head">Transit Disruption &amp; Excuse Certificates</h3>
-            <p style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="dis_sub">Log transit strikes, heavy rains, or delays to excuse missed attendance scans</p>
+            <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="dis_head">Auto-Issued Transit Disruption &amp; Excuse Certificates</h3>
+            <p style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="dis_sub">Official certificates automatically pushed by the Transit Authority to excuse missed scans during transit delays.</p>
           </div>
 
-          <form id="disruption-form" onsubmit="submitDisruptionReport(event)">
-            <div class="form-grid">
-              <div class="form-group">
-                <label data-i18n="dis_title_lbl">Disruption Event Title</label>
-                <input type="text" id="disrupt_title" placeholder="e.g. Regional Hartal / Heavy Waterlogging" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="dis_date_lbl">Affected Date</label>
-                <input type="date" id="disrupt_date" required />
-              </div>
-              <div class="form-group">
-                <label data-i18n="dis_cat_lbl">Disruption Category</label>
-                <select id="disrupt_type">
-                  <option value="Hartal / Strike">Hartal / Strike / Protest</option>
-                  <option value="Heavy Rains / Flooding">Heavy Rains &amp; Waterlogging</option>
-                  <option value="Metro / Bus Breakdown">Metro / Bus Technical Breakdown</option>
-                  <option value="Traffic Gridlock">Severe Traffic Gridlock</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label data-i18n="dis_desc_lbl">Detailed Description</label>
-                <textarea id="disrupt_desc" rows="2" placeholder="Describe the delay or route blockage..." required></textarea>
-              </div>
-            </div>
-            <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #f59e0b, #d97706); margin-top: 10px;" data-i18n="btn_submit_dis">Submit Disruption Report</button>
-          </form>
-
-          <div style="margin-top: 20px;">
-            <h4 style="font-size: 0.95rem; color: var(--accent-blue); margin-bottom: 8px;" data-i18n="dis_logged_head">Logged Disruption Certificates</h4>
-            <div id="disruption-list-container">
-              <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.78rem;">
-                <div style="font-weight: 800; color: var(--accent-amber);">CERT-2026-901: Heavy Waterlogging at Edappally</div>
-                <div style="color: var(--text-muted); margin-top: 2px;">Date: 2026-09-14 | Status: <strong style="color:#4ade80;">Excused &amp; Verified</strong></div>
-              </div>
-            </div>
-          </div>
+          <div id="disruption-list-container"></div>
         </div>
       </div>
 
-      <!-- 5. Profile Vault -->
+      <!-- 4. Profile Vault -->
       <div id="sec-profile-view" style="display: none;">
         <div class="card">
           <h3 style="color: var(--accent-blue); margin-bottom: 16px; font-size: 1.1rem;" data-i18n="vault_head">Student Profile Vault</h3>
@@ -529,7 +405,7 @@
 
           <div class="route-box">
             <div><strong>Home Address:</strong> <span id="vault-home">Meadowlands, Ernakulam North</span></div>
-            <div><strong>Institution:</strong> <span id="vault-inst">Jain University, Kochi Campus</span></div>
+            <div><strong>Institution:</strong> <span id="vault-inst">Jain University, Kochi</span></div>
             <div><strong>Bus Corridor:</strong> <span id="vault-bus">Ernakulam North -> Infopark</span></div>
           </div>
 
@@ -537,6 +413,114 @@
             Delete / Revoke Pass
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- NEW APPLICANT PORTAL WRAPPER -->
+    <div id="new-applicant-wrapper" style="display: none;">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h3 style="color: var(--accent-blue); font-size: 1.1rem;" data-i18n="app_head">New Transit Concession Application</h3>
+            <p style="font-size: 0.76rem; color: var(--text-muted);" data-i18n="app_sub">Generates institutional enrollment proof automatically</p>
+          </div>
+          <div style="display:flex; gap: 6px;">
+            <button type="button" class="btn-pill" onclick="autoFillJainDemo()" data-i18n="btn_autofill">Auto-Fill</button>
+            <button type="button" class="btn-pill" style="background: #16a34a; color:#fff;" onclick="openWhatsAppOtpModal()" data-i18n="btn_whatsapp">WhatsApp OTP</button>
+            <button type="button" class="btn-pill" onclick="showLandingPage()" data-i18n="btn_back_home">Back to Home</button>
+          </div>
+        </div>
+
+        <form id="pass-registration-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label data-i18n="lbl_name">Student Full Name</label>
+              <input type="text" id="reg_name" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_reg">Student Reg / Roll ID</label>
+              <input type="text" id="reg_student_id" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_dob">Date of Birth</label>
+              <input type="date" id="reg_dob" value="2004-05-12" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_age">Age</label>
+              <input type="number" id="reg_age" value="22" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_blood">Blood Group</label>
+              <select id="reg_blood_group">
+                <option value="O+">O Positive (O+)</option>
+                <option value="A+">A Positive (A+)</option>
+                <option value="B+">B Positive (B+)</option>
+                <option value="AB-">AB Negative (AB-)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_phone">Student Contact Phone</label>
+              <input type="tel" id="reg_phone" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_guard_name">Guardian Name</label>
+              <input type="text" id="reg_guardian_name" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_guard_rel">Relation with Applicant</label>
+              <input type="text" id="reg_guardian_relation" placeholder="e.g. Father, Mother" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_guard_phone">Guardian Emergency Phone</label>
+              <input type="tel" id="reg_guardian_phone" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_transport">Opted Transport Mode</label>
+              <select id="reg_transport_mode">
+                <option value="Both">Both Bus and Metro</option>
+                <option value="Bus">Bus Concession Only</option>
+                <option value="Metro">Metro Concession Only</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_bus_pickup">Bus Boarding Stop</label>
+              <input type="text" id="reg_bus_pickup" placeholder="e.g. Ernakulam North" />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_bus_drop">Bus Dropping Stop</label>
+              <input type="text" id="reg_bus_drop" placeholder="e.g. Infopark" />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_metro_pickup">Metro Boarding Station</label>
+              <input type="text" id="reg_metro_pickup" placeholder="e.g. Kaloor Metro" />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_metro_drop">Metro Dropping Station</label>
+              <input type="text" id="reg_metro_drop" placeholder="e.g. Edappally Metro" />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_degree">Degree Level (Subsidy Rule)</label>
+              <select id="reg_degree_level">
+                <option value="UG">UG (100% Free Pass)</option>
+                <option value="PG">PG (100% Free Pass)</option>
+                <option value="PhD">PhD (50% Subsidy)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_home">Home Address</label>
+              <input type="text" id="reg_home_address" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_inst">Institution Campus Address</label>
+              <input type="text" id="reg_institution_address" value="Jain University, Kochi Campus, Infopark" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="lbl_bonafide">Auto-Generated Enrollment Proof</label>
+              <textarea id="reg_bonafide_text" rows="2" readonly style="color: var(--accent-blue); font-size: 0.74rem;"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit" data-i18n="btn_submit_app">Submit New Application</button>
+        </form>
       </div>
     </div>
 
@@ -593,7 +577,7 @@
   </footer>
 
   <script>
-    const DB_KEY = "passx_offline_database_v5";
+    const DB_KEY = "passx_offline_database_v6";
 
     const i18nData = {
       en: {
@@ -608,11 +592,13 @@
         stat_scan: "Scan Verification",
         stat_antipass: "Anti-Passback",
         stat_sec: "P-256 Security",
-        btn_launch: "Access Student Pass Portal",
+        gw_existing_title: "Existing User Portal",
+        gw_existing_desc: "Access your active PassX smart QR pass, transit attendance logs, and profile vault.",
+        gw_new_title: "New Applicant Portal",
+        gw_new_desc: "Submit your digital transit concession application and generate automated enrollment proof.",
         tab_pass: "Smart Pass",
-        tab_apply: "Application",
         tab_attendance: "Attendance",
-        tab_disruption: "Disruption",
+        tab_disruption: "Disruption & Excuses",
         tab_vault: "Profile Vault",
         card_title: "PassX Student Smart Pass",
         date_applied: "Applied:",
@@ -623,10 +609,11 @@
         card_institution: "Institution: Universal Student Network",
         card_clearance: "Clearance: Cleared (0 Restraints)",
         btn_delete_pass: "Delete / Revoke Pass",
-        app_head: "Transit Concession Application",
+        app_head: "New Transit Concession Application",
         app_sub: "Generates institutional enrollment proof automatically",
         btn_autofill: "Auto-Fill",
         btn_whatsapp: "WhatsApp OTP",
+        btn_back_home: "Back to Home",
         lbl_name: "Student Full Name",
         lbl_reg: "Student Reg / Roll ID",
         lbl_dob: "Date of Birth",
@@ -645,7 +632,7 @@
         lbl_home: "Home Address",
         lbl_inst: "Institution Campus Address",
         lbl_bonafide: "Auto-Generated Enrollment Proof",
-        btn_submit_app: "Submit Application",
+        btn_submit_app: "Submit New Application",
         cal_head: "Transit Attendance Calendar",
         cal_sub: "Morning (AM), Afternoon (NOON), Evening (PM)",
         cal_comp: "Compliance: 82%",
@@ -653,14 +640,8 @@
         leg_unscanned: "Unscanned / Missed",
         leg_delayed: "Delayed / Disrupted",
         leg_holiday: "Holiday",
-        dis_head: "Transit Disruption & Excuse Certificates",
-        dis_sub: "Log transit strikes, heavy rains, or delays to excuse missed attendance scans",
-        dis_title_lbl: "Disruption Event Title",
-        dis_date_lbl: "Affected Date",
-        dis_cat_lbl: "Disruption Category",
-        dis_desc_lbl: "Detailed Description",
-        btn_submit_dis: "Submit Disruption Report",
-        dis_logged_head: "Logged Disruption Certificates",
+        dis_head: "Auto-Issued Transit Disruption & Excuse Certificates",
+        dis_sub: "Official certificates automatically pushed by the Transit Authority to excuse missed scans during transit delays.",
         vault_head: "Student Profile Vault",
         cond_head: "Conductor Scanner (Back Camera)",
         btn_exit: "Exit",
@@ -677,16 +658,18 @@
         nav_desks: "ജീവനക്കാരുടെ ഡെസ്ക്",
         hero_badge: "ഓഫ്‌ലൈൻ ക്രിപ്റ്റോഗ്രാഫിക് ട്രാൻസിറ്റ് അതോറിറ്റി",
         hero_title: "എല്ലാ വിദ്യാർത്ഥികൾക്കുമുള്ള ഡിജിറ്റൽ യാത്രാക്കൂലി ഇളവുകൾ",
-        hero_subtitle: "ബ്രൗസർ ലോക്കൽ സ്റ്റോറേജ് എഞ്ചിൻ, ഓഫ്‌ലൈൻ ഒപ്റ്റിക്കൽ ക്യുആർ വെരിഫിക്കേഷൻ എന്നിവ പിന്തുണയ്ക്കുന്ന സുരക്ഷിത വിദ്യാർത്ഥി യാത്രാക്കൂലി പാസുകൾ.",
+        hero_subtitle: "സുരക്ഷിത വിദ്യാർത്ഥി യാത്രാക്കൂലി പാസുകൾ.",
         stat_offline: "ഓഫ്‌ലൈൻ സ്റ്റാൻഡേലോൺ",
         stat_scan: "സ്കാൻ വെരിഫിക്കേഷൻ",
         stat_antipass: "ആന്റി-പാസ്ബാക്ക്",
         stat_sec: "P-256 സുരക്ഷ",
-        btn_launch: "സ്റ്റുഡന്റ് പാസ് പോർട്ടൽ തുറക്കുക",
+        gw_existing_title: "നിലവിലുള്ള ഉപയോക്തൃ പോർട്ടൽ",
+        gw_existing_desc: "നിങ്ങളുടെ ആക്ടീവ് പാസ്‌എക്സ് സ്മാർട്ട് ക്യുആർ പാസ് ആക്സസ് ചെയ്യുക.",
+        gw_new_title: "പുതിയ അപേക്ഷകരുടെ പോർട്ടൽ",
+        gw_new_desc: "പുതിയ യാത്രാക്കൂലി പാസിനായി അപേക്ഷിക്കുക.",
         tab_pass: "സ്മാർട്ട് പാസ്",
-        tab_apply: "അപേക്ഷ",
         tab_attendance: "ഹാജർ",
-        tab_disruption: "തടസ്സങ്ങൾ",
+        tab_disruption: "തടസ്സ സർട്ടിഫിക്കറ്റുകൾ",
         tab_vault: "പ്രൊഫൈൽ വാൾട്ട്",
         card_title: "പാസ്‌എക്സ് സ്റ്റുഡന്റ് സ്മാർട്ട് പാസ്",
         date_applied: "അപേക്ഷിച്ചത്:",
@@ -697,10 +680,11 @@
         card_institution: "സ്ഥാപനം: യൂണിവേഴ്സൽ സ്റ്റുഡന്റ് നെറ്റ്‌വർക്ക്",
         card_clearance: "ക്ലിയറൻസ്: ക്ലിയർ ചെയ്തു",
         btn_delete_pass: "പാസ് ഡിലീറ്റ് ചെയ്യുക",
-        app_head: "ട്രാൻസിറ്റ് കൺസെഷൻ അപേക്ഷ",
+        app_head: "പുതിയ ട്രാൻസിറ്റ് കൺസെഷൻ അപേക്ഷ",
         app_sub: "സ്ഥാപന എൻറോൾമെന്റ് തെളിവ് സ്വയം സൃഷ്ടിക്കുന്നു",
         btn_autofill: "ഓട്ടോ-ഫിൽ",
         btn_whatsapp: "വാട്സ്ആപ്പ് ഒടിപി",
+        btn_back_home: "ഹോമിലേക്ക് മടങ്ങുക",
         lbl_name: "വിദ്യാർത്ഥിയുടെ മുഴുവൻ പേര്",
         lbl_reg: "രജിസ്ട്രേഷൻ / റോൾ ഐഡി",
         lbl_dob: "ജനനത്തീയതി",
@@ -727,14 +711,8 @@
         leg_unscanned: "സ്കാൻ ചെയ്തില്ല / നഷ്ടമായി",
         leg_delayed: "വൈകി / തടസ്സപ്പെട്ടു",
         leg_holiday: "അവധി",
-        dis_head: "യാത്രാ തടസ്സ സർട്ടിഫിക്കറ്റുകൾ",
-        dis_sub: "ഹർത്താലോ മഴയോ മൂലം നഷ്ടപ്പെട്ട ഹാജറിന് അപേക്ഷിക്കുക",
-        dis_title_lbl: "തടസ്സ വിവരം",
-        dis_date_lbl: "തീയതി",
-        dis_cat_lbl: "വിഭാഗം",
-        dis_desc_lbl: "വിശദീകരണം",
-        btn_submit_dis: "റിപ്പോർട്ട് സമർപ്പിക്കുക",
-        dis_logged_head: "സമർപ്പിച്ച തടസ്സ റിപ്പോർട്ടുകൾ",
+        dis_head: "ഓട്ടോ-ഇഷ്യൂഡ് യാത്രാ തടസ്സ സർട്ടിഫിക്കറ്റുകൾ",
+        dis_sub: "യാത്രാ തടസ്സങ്ങൾ ഉണ്ടാകുമ്പോൾ ട്രാൻസിറ്റ് അതോറിറ്റി ഓട്ടോമാറ്റിക്കായി അയക്കുന്ന സർട്ടിഫിക്കറ്റുകൾ.",
         vault_head: "പ്രൊഫൈൽ വാൾട്ട്",
         cond_head: "കണ്ടക്ടർ സ്കാനർ (ബാക്ക് ക്യാമറ)",
         btn_exit: "പുറത്തുകടക്കുക",
@@ -751,16 +729,18 @@
         nav_desks: "स्टाफ डेस्क",
         hero_badge: "ऑफ़लाइन क्रिप्टोग्राफिक ट्रांजिट अथॉरिटी",
         hero_title: "सभी छात्रों के लिए शून्य-विलंबता डिजिटल रियायतें",
-        hero_subtitle: "ब्राउज़र लोकल स्टोरेज इंजन और ऑफ़लाइन ऑप्टिकल क्यूआर सत्यापन द्वारा समर्थित सुरक्षित छात्र पास।",
+        hero_subtitle: "सुरक्षित छात्र पास।",
         stat_offline: "ऑफ़लाइन स्टैंडअलोन",
         stat_scan: "स्कैन सत्यापन",
         stat_antipass: "एंटी-पासबैक",
         stat_sec: "P-256 सुरक्षा",
-        btn_launch: "स्टूडेंट पास पोर्टल खोलें",
+        gw_existing_title: "मौजूदा उपयोगकर्ता पोर्टल",
+        gw_existing_desc: "अपना सक्रिय PassX स्मार्ट QR पास और उपस्थिति लॉग एक्सेस करें।",
+        gw_new_title: "नया आवेदक पोर्टल",
+        gw_new_desc: "अपने डिजिटल ट्रांजिट रियायत आवेदन जमा करें।",
         tab_pass: "स्मार्ट पास",
-        tab_apply: "आवेदन",
         tab_attendance: "उपस्थिति",
-        tab_disruption: "बाधाएं",
+        tab_disruption: "बाधा और बहाना प्रमाण पत्र",
         tab_vault: "प्रोफाइल वॉल्ट",
         card_title: "PassX स्टूडेंट स्मार्ट पास",
         date_applied: "आवेदन तिथि:",
@@ -771,10 +751,11 @@
         card_institution: "संस्थान: यूनिवर्सल स्टूडेंट नेटवर्क",
         card_clearance: "मंजूरी: साफ़ (0 प्रतिबंध)",
         btn_delete_pass: "पास हटाएं / रद्द करें",
-        app_head: "पारगमन रियायत आवेदन",
+        app_head: "नया पारगमन रियायत आवेदन",
         app_sub: "संस्थागत नामांकन प्रमाण स्वतः उत्पन्न करता है",
         btn_autofill: "ऑटो-फिल",
         btn_whatsapp: "व्हाट्सएप ओटीपी",
+        btn_back_home: "होम पर वापस जाएं",
         lbl_name: "छात्र का पूरा नाम",
         lbl_reg: "पंजीकरण / रोल आईडी",
         lbl_dob: "जन्म तिथि",
@@ -793,7 +774,7 @@
         lbl_home: "घर का पता",
         lbl_inst: "परिसर का पता",
         lbl_bonafide: "बनाफाइड प्रमाणपत्र",
-        btn_submit_app: "आवेदन जमा करें",
+        btn_submit_app: "नया आवेदन जमा करें",
         cal_head: "पारगमन उपस्थिति कैलेंडर",
         cal_sub: "सुबह (AM), दोपहर (NOON), शाम (PM)",
         cal_comp: "अनुपालन: 82%",
@@ -801,14 +782,8 @@
         leg_unscanned: "अस्कैनित / छूटा हुआ",
         leg_delayed: "विलंबित / बाधित",
         leg_holiday: "छुट्टी",
-        dis_head: "पारगमन बाधा और बहाना प्रमाण पत्र",
-        dis_sub: "हड़ताल या भारी बारिश के कारण छूटी हुई उपस्थिति दर्ज करें",
-        dis_title_lbl: "बाधा घटना शीर्षक",
-        dis_date_lbl: "प्रभावित तिथि",
-        dis_cat_lbl: "श्रेणी",
-        dis_desc_lbl: "विस्तृत विवरण",
-        btn_submit_dis: "बाधा रिपोर्ट जमा करें",
-        dis_logged_head: "दर्ज बाधा प्रमाण पत्र",
+        dis_head: "स्वतः-जारी पारगमन बाधा और बहाना प्रमाण पत्र",
+        dis_sub: "पारगमन देरी के दौरान छूटे हुए स्कैन को माफ करने के लिए ट्रांजिट अथॉरिटी द्वारा स्वचालित रूप से भेजे गए आधिकारिक प्रमाण पत्र।",
         vault_head: "छात्र प्रोफाइल वॉल्ट",
         cond_head: "कंडक्टर स्कैनर (बैक कैमरा)",
         btn_exit: "बाहर निकलें",
@@ -881,17 +856,16 @@
     }
 
     function getDisruptions() {
-      const data = localStorage.getItem("passx_disruptions");
+      const data = localStorage.getItem("passx_auto_disruptions");
       if (!data) {
-        const initial = [{ title: "Heavy Waterlogging at Edappally", date: "2026-09-14", type: "Heavy Rains / Flooding", desc: "Subway flooded during morning rush hour.", status: "Excused & Verified" }];
-        localStorage.setItem("passx_disruptions", JSON.stringify(initial));
+        const initial = [
+          { title: "CERT-2026-941: Regional Hartal & Transit Suspension", date: "2026-09-18", type: "Hartal / Strike", desc: "Mandatory statewide transport strike. All morning and afternoon attendance scans are automatically excused.", status: "Auto-Issued & Verified" },
+          { title: "CERT-2026-901: Heavy Waterlogging at Edappally", date: "2026-09-14", type: "Heavy Rains / Flooding", desc: "Subway flooded during morning rush hour. Excuse certificate pushed to student account.", status: "Auto-Issued & Verified" }
+        ];
+        localStorage.setItem("passx_auto_disruptions", JSON.stringify(initial));
         return initial;
       }
       return JSON.parse(data);
-    }
-
-    function saveDisruptions(list) {
-      localStorage.setItem("passx_disruptions", JSON.stringify(list));
     }
 
     let html5QrCode = null;
@@ -927,26 +901,28 @@
     function showLandingPage() {
       document.getElementById('sec-landing-page').style.display = 'block';
       document.getElementById('student-desk-wrapper').style.display = 'none';
+      document.getElementById('new-applicant-wrapper').style.display = 'none';
       document.getElementById('view-conductor').style.display = 'none';
       document.getElementById('view-admin').style.display = 'none';
       if (html5QrCode) { try { html5QrCode.stop().catch(()=>{}); } catch(e){} html5QrCode = null; }
     }
 
-    function launchStudentPassDesk() {
+    function launchExistingUserPortal() {
       document.getElementById('sec-landing-page').style.display = 'none';
       document.getElementById('student-desk-wrapper').style.display = 'block';
+      document.getElementById('new-applicant-wrapper').style.display = 'none';
       document.getElementById('view-conductor').style.display = 'none';
       document.getElementById('view-admin').style.display = 'none';
       switchStudentTab('pass-view');
       fetchActiveStudentPass();
     }
 
-    function launchApplicationDesk() {
+    function launchNewApplicantPortal() {
       document.getElementById('sec-landing-page').style.display = 'none';
-      document.getElementById('student-desk-wrapper').style.display = 'block';
+      document.getElementById('student-desk-wrapper').style.display = 'none';
+      document.getElementById('new-applicant-wrapper').style.display = 'block';
       document.getElementById('view-conductor').style.display = 'none';
       document.getElementById('view-admin').style.display = 'none';
-      switchStudentTab('apply-view');
       updateAutoEnrollmentStatement();
     }
 
@@ -958,7 +934,7 @@
     }
 
     function switchStudentTab(tabId) {
-      const tabs = ['pass-view', 'apply-view', 'calendar-view', 'excuse-view', 'profile-view'];
+      const tabs = ['pass-view', 'calendar-view', 'excuse-view', 'profile-view'];
       tabs.forEach(t => {
         const sec = document.getElementById('sec-' + t);
         const btn = document.getElementById('tab-btn-' + t.split('-')[0]);
@@ -1151,28 +1127,13 @@
       if (!container) return;
       const list = getDisruptions();
       container.innerHTML = list.map(d => `
-        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.78rem; margin-bottom: 8px;">
-          <div style="font-weight: 800; color: var(--accent-amber);">${d.title} (${d.type})</div>
-          <div style="color: var(--text-muted); margin-top: 2px;">Date: ${d.date} | Description: ${d.desc}</div>
-          <div style="margin-top: 4px; color: #4ade80; font-weight: 700;">Status: ${d.status}</div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 0.8rem; margin-bottom: 10px;">
+          <div style="font-weight: 800; color: var(--accent-amber); font-size: 0.9rem;">${d.title}</div>
+          <div style="color: var(--text-muted); margin-top: 4px;"><strong>Category:</strong> ${d.type} | <strong>Date Issued:</strong> ${d.date}</div>
+          <div style="color: var(--text-main); margin-top: 4px; line-height: 1.4;">${d.desc}</div>
+          <div style="margin-top: 6px; color: #4ade80; font-weight: 700;">Status: ${d.status} (Auto-Applied to Account)</div>
         </div>
       `).join('');
-    }
-
-    function submitDisruptionReport(e) {
-      e.preventDefault();
-      const title = document.getElementById('disrupt_title').value;
-      const date = document.getElementById('disrupt_date').value;
-      const type = document.getElementById('disrupt_type').value;
-      const desc = document.getElementById('disrupt_desc').value;
-
-      const list = getDisruptions();
-      list.unshift({ title, date, type, desc, status: "Submitted & Pending Review" });
-      saveDisruptions(list);
-
-      alert("Disruption certificate successfully logged!");
-      document.getElementById('disruption-form').reset();
-      renderDisruptionList();
     }
 
     function updateAutoEnrollmentStatement() {
@@ -1249,8 +1210,8 @@
 
           window.currentPass = newPass;
           localStorage.setItem('passx_active_id', passId);
-          alert("Application submitted successfully! Status: PENDING.");
-          launchStudentPassDesk();
+          alert("Application submitted successfully! Status: PENDING. Accessing your student portal.");
+          launchExistingUserPortal();
         });
       }
 
@@ -1497,12 +1458,14 @@
         if (choice === "1") {
           document.getElementById('sec-landing-page').style.display = 'none';
           document.getElementById('student-desk-wrapper').style.display = 'none';
+          document.getElementById('new-applicant-wrapper').style.display = 'none';
           document.getElementById('view-conductor').style.display = 'block';
           document.getElementById('view-admin').style.display = 'none';
           startConductorCamera();
         } else if (choice === "2") {
           document.getElementById('sec-landing-page').style.display = 'none';
           document.getElementById('student-desk-wrapper').style.display = 'none';
+          document.getElementById('new-applicant-wrapper').style.display = 'none';
           document.getElementById('view-conductor').style.display = 'none';
           document.getElementById('view-admin').style.display = 'block';
           loadAdminApplications();
